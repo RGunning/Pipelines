@@ -1,0 +1,829 @@
+--- 
+0: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/10966_8#3.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/10966_8#3.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/10966_8#3.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  bl6fix: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bl6fix;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/software/fasta_name_strip -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bl6fix/file 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bl6fix/err
+    condition: once
+    placeholders: 
+      - bl6fix
+      - software.fasta_name_strip
+      - datasource.Sailfish
+      - bl6fix.file
+      - bl6fix.err
+  castfix: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/castfix;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/software/fasta_name_strip -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/castfix/file 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/castfix/err
+    condition: once
+    placeholders: 
+      - castfix
+      - software.fasta_name_strip
+      - datasource.Sailfish
+      - castfix.file
+      - castfix.err
+  de: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/de;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; Rscript /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/software/DEanalysis --inputfiles /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/sailfishtranscriptome/quant_bias_corrected.genes.sf --sex F F F M M M F F F M M M --strain B B B B B B B B B B B B --cell B B B T T T T T T B B B --fastq FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE --filenames 10966_8#3.bam 10966_8#2.bam 10966_8#1.bam 11049_5#18.bam 11049_5#17.bam 11049_5#16.bam 11049_4#6.bam 11049_4#5.bam 11049_4#4.bam 11048_5#15.bam 11048_5#14.bam 11048_5#13.bam 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/de/err
+    condition: once
+    mem: 5000
+    placeholders: 
+      - de
+      - software.DEanalysis
+      - jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf
+      - jobs.datasource.Sex
+      - jobs.datasource.Strain
+      - jobs.datasource.Cell
+      - jobs.datasource.fastq
+      - jobs.datasource.Filename
+      - de.err
+  sailfishIndexBL6: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tmkdir -p /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/;\n\trm -R /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/*;\n\tsalmon --no-version-check index -t /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bl6fix/file -p 24  -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/;\n\trm /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bl6fix/file; touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/err"
+    condition: once
+    cores: 24
+    mem: 7500
+    placeholders: 
+      - sailfishIndexBL6
+      - datasource.Sailfish
+      - datasource.Sailfish
+      - bl6fix.file
+      - datasource.Sailfish
+      - bl6fix.file
+      - sailfishIndexBL6.touch
+      - sailfishIndexBL6.err
+  sailfishIndexCast: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; ls * | grep -v err | xargs rm -rf;\tmkdir -p /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/C/transcriptome/;\n\trm -R /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/C/transcriptome/*;\n\tsalmon --no-version-check index -t /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/castfix/file -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/C/transcriptome/;\n\trm /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/castfix/file;touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/err"
+    condition: once
+    cores: 32
+    mem: 7500
+    placeholders: 
+      - sailfishIndexCast
+      - datasource.Sailfish
+      - datasource.Sailfish
+      - castfix.file
+      - datasource.Sailfish
+      - castfix.file
+      - sailfishIndexCast.touch
+      - sailfishIndexCast.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+1: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/10966_8#2.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/10966_8#2.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/10966_8#2.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+10: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11048_5#14.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11048_5#14.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11048_5#14.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+11: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11048_5#13.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11048_5#13.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11048_5#13.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+2: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/10966_8#1.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/10966_8#1.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/10966_8#1.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+3: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_5#18.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_5#18.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_5#18.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+4: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_5#17.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_5#17.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_5#17.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+5: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_5#16.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_5#16.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_5#16.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+6: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_4#6.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_4#6.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_4#6.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+7: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_4#5.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_4#5.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_4#5.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+8: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11049_4#4.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11049_4#4.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11049_4#4.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err
+9: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ FALSE == \"FALSE\" ];\n\t\tthen\n\t\tif [ TRUE == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=/lustre/scratch105/vrpipe/import/11048_5#15.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_2.fq.gz;\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/11048_5#15.bam > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz;\n\t\t\tfi;\n\t\telse\n\t\t\tcat /lustre/scratch105/vrpipe/import/11048_5#15.bam* > /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz;\n\t\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/err"
+    condition: ~
+    cores: 4
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.fastq
+      - datasource.paired_end
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  sailfishtranscriptome: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/sailfishtranscriptome;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexBL6/touch /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishIndexCast/touch;\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i /nfs/users/nfs_r/rg12/lustre109/Sailfish/Indexes/B/transcriptome/ -o /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/sailfishtranscriptome -l IU -1 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/trimgalore/out_1_val_1.fq.gz) -2 <(gunzip -cf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/trimgalore/out_2_val_2.fq.gz) --biasCorrect -g /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/input/Mus_musculus.GRCm38.79.gtf --useReadCompat;\nEOF 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/sailfishtranscriptome/err"
+    condition: ~
+    cores: 32
+    mem: 40000
+    outputfiles: 
+      - libFormatCounts.txt
+      - libParams
+      - logs
+      - quant_bias_corrected.genes.sf
+      - quant_bias_corrected.sf
+      - quant.genes.sf
+      - quant.sf
+    placeholders: 
+      - sailfishtranscriptome
+      - sailfishIndexBL6.touch
+      - sailfishIndexCast.touch
+      - datasource.Sailfish
+      - datasource.Strain2
+      - sailfishtranscriptome
+      - trimgalore.output2
+      - trimgalore.output4
+      - input.Mus_musculus.GRCm38.79.gtf
+      - sailfishtranscriptome.err
+  trimgalore: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/trimgalore;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ TRUE == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_2.fq.gz;\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/bamtofq/out_1.fq.gz;\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/trimgalore/err"
+    condition: ~
+    cores: 3
+    mem: 2000
+    outputfiles: 
+      - out_1.fq.gz_trimming_report.txt
+      - out_1_val_1.fq.gz
+      - out_2.fq.gz_trimming_report.txt
+      - out_2_val_2.fq.gz
+      - out_1_val_1.html
+      - out_1_val_1.zip
+      - out_2_val_2.html
+      - out_2_val_2.zip
+    placeholders: 
+      - trimgalore
+      - bamtofq.out_1.fq.gz
+      - datasource.paired_end
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - trimgalore.err

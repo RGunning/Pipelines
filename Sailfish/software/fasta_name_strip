@@ -1,0 +1,65 @@
+#!/usr/bin/env perl
+
+#  transcript_to_gene.pl
+#  transcript_to_gene.
+#
+#  Created by Richard Gunning on 8/6/14.
+#  Copyright (c) 2014 Richard Gunning. All rights reserved.
+
+use warnings;
+use strict;
+use Getopt::Long;
+use Pod::Usage;              # avoid redundant &Usage()
+#use Bio::Tools::GFF;
+
+
+my $outfile = './output';
+my $infile = '';
+
+my $opt_help;
+
+GetOptions ('infile|i=s' => \$infile,
+'outfile|o=s' => \$outfile,
+'help|h!' => \$opt_help,
+) or pod2usage(-verbose => 1) && exit;;
+pod2usage(-verbose => 1) && exit if defined $opt_help;
+
+
+die "file doesn't exist\n" if (!-e $infile);
+
+open (my $outfh, '>', $outfile) or die "can't write output to file";
+open (my $infh, '<', $infile) or die "Can't Open File\n";
+
+#read tgm to hash
+while (my $line = <$infh>){
+    if ( $line =~ />/){
+        my ($transcript_id,$junk) = split(/\||\s/,$line,2);
+        print $outfh "$transcript_id\n";
+    }
+    else{
+        print $outfh $line;
+    }
+}
+
+
+close $infh;
+close $outfh;
+
+=head1 NAME
+
+ transcript_to_gene.pl
+
+ =head1 SYNOPSIS
+
+ perl transcript_to_gene.pl [Options]
+
+ remove Duplicates sequences from Fasta file
+ Keep second occurence of sequence
+
+ =head1 OPTIONS
+
+ -i,-infil      fasta input file
+ -o,-outfile    fasta output file
+ -h,-help
+
+ =cut

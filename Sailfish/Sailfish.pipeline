@@ -1,0 +1,89 @@
+bl6fix.once [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %]
+
+
+castfix.once [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %]
+
+sailfishIndexBL6.once
+	mkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;
+	rm -R [% datasource.Sailfish %]/Indexes/B/transcriptome/*;
+	salmon --no-version-check index -t [% bl6fix.file %] -p 24  -i [% datasource.Sailfish %]/Indexes/B/transcriptome/;
+	rm [% bl6fix.file %]; touch [% sailfishIndexBL6.touch %]
+sailfishIndexBL6.mem 7500
+sailfishIndexBL6.cores 24
+
+sailfishIndexCast.once ls * | grep -v err | xargs rm -rf;
+	mkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;
+	rm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;
+	salmon --no-version-check index -t [% castfix.file %] -p 32 -i [% datasource.Sailfish %]/Indexes/C/transcriptome/;
+	rm [% castfix.file %];touch [% sailfishIndexCast.touch %]
+sailfishIndexCast.mem 7500
+sailfishIndexCast.cores 32
+
+#bamtofastq. if [ [% datasource.fastq %] == "FALSE" ];
+#then bamtofastq filename=[% datasource.File %] F=[% bamtofastq.mate1.fq %] F2=[% bamtofastq.mate2.fq %];
+#fi
+#bamtofastq.mem 250
+
+bamtofq. . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;
+	if [ [% datasource.fastq %] == "FALSE" ];
+		then
+		if [ [% datasource.paired_end %] == "TRUE" ];
+			then
+				bamtofastq filename=[% datasource.File %] gz=1 F=[% bamtofq.out_1.fq.gz %] F2=[% bamtofq.out_2.fq.gz %];
+			else
+				bamtofastq gz=1 filename=[% datasource.File %] > [% bamtofq.out_1.fq.gz %];
+			fi;
+		else
+			cat [% datasource.File %]* > [% bamtofq.out_1.fq.gz %];
+		fi
+bamtofq.cores 4
+bamtofq.mem 1500
+
+trimgalore. . /nfs/users/nfs_r/rg12/.bashrc;
+	trap SomeErrorHandler ERR;
+	length=$(gunzip -c [% bamtofq.out_1.fq.gz %] | head -2| tail -1 | wc -c);
+	length=$[length-11];
+	if [ [% datasource.paired_end %] == "TRUE" ];
+	then
+#		trim_galore --gzip --length 90 --paired -a [% datasource.Tag %] --stringency 4 --trim1 [% bamtofq.out_1.fq.gz %] [% bamtofq.out_2.fq.gz %];
+		trim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 [% bamtofq.out_1.fq.gz %] [% bamtofq.out_2.fq.gz %];
+	else
+		trim_galore --fastqc --gzip --length $length --stringency 4 [% bamtofq.out_1.fq.gz %];
+#		trim_galore --gzip --length 20 -a [% datasource.Tag %] --stringency 4 [% bamtofq.out_1.fq.gz %];
+		mv out_1_trimmed.fq.gz out_1_val_1.fq.gz;
+	fi
+trimgalore.mem 2000
+trimgalore.cores 3
+trimgalore.output out_1.fq.gz_trimming_report.txt out_1_val_1.fq.gz out_2.fq.gz_trimming_report.txt out_2_val_2.fq.gz out_1_val_1.html out_1_val_1.zip out_2_val_2.html out_2_val_2.zip
+
+
+#mate1. if [ [% datasource.fastq %] == "FALSE" ];
+#then fastx_trimmer -f 2 -i [% bamtofastq.mate1.fq %] |gzip -cf > [% mate1.file %];rm [% bamtofastq.mate1 %];
+#else ln -sf [% datasource.File %] [% mate1.file %];
+#fi
+#mate1.mem 250
+#
+#mate2. if [ [% datasource.fastq %] == "FALSE" ];
+#then fastx_trimmer -f 2 -i [% bamtofastq.mate2.fq %] |gzip -cf > [% mate2.file %];rm [% bamtofastq.mate2 %];
+#else ln -sf [% datasource.File2 %] [% mate2.file %];
+#fi
+#mate2.mem 250
+
+sailfishtranscriptome.
+	ls [% sailfishIndexBL6.touch %] [% sailfishIndexCast.touch %];
+	set +o posix;
+	bash << EOF
+salmon --no-version-check quant -p 32 -i [% datasource.Sailfish %]/Indexes/[% datasource.Strain2 %]/transcriptome/ -o [% sailfishtranscriptome %] -l IU -1 <(gunzip -cf [% trimgalore.output2 %]) -2 <(gunzip -cf [% trimgalore.output4 %]) --biasCorrect -g [% input.Mus_musculus.GRCm38.79.gtf %] --useReadCompat;
+EOF
+#[% software.sailfishrun %] -p [% datasource.paired_end %] -f [% datasource.fastq %] -s [% datasource.Sailfish %] -b [% datasource.Strain2 %] -t [% sailfishtranscriptome %] -m [% trimgalore.output2 %] -n [% trimgalore.output4 %];
+sailfishtranscriptome.mem 40000
+sailfishtranscriptome.cores 32
+sailfishtranscriptome.output libFormatCounts.txt  libParams  logs  quant_bias_corrected.genes.sf  quant_bias_corrected.sf  quant.genes.sf  quant.sf
+
+##tgm
+#tgm. [% software.transcript_to_gene %] -s [% sailfishtranscriptome.output1 %] -o [% tgm.output %] -t [% input.Mus_musculus.GRCm38.79.gtf %]
+#tgm.mem 200
+
+de.once Rscript [% software.DEanalysis %] --inputfiles [% jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %]
+ --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %]
+de.mem 5000

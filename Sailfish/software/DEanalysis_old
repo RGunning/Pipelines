@@ -1,0 +1,135 @@
+.libPaths( c( .libPaths(), "/nfs/users/nfs_r/rg12/R/x86_64-unknown-linux-gnu-library/3.0") )
+
+args <- commandArgs(trailingOnly = TRUE)
+
+hh <- paste(unlist(args),collapse=' ')
+listoptions <- unlist(strsplit(hh,'--'))[-1]
+options.args <- lapply(listoptions,function(x){
+  unlist(strsplit(x, ' '))[-1]
+})
+options.names <- lapply(listoptions,function(x){
+  unlist(strsplit(x, ' '))[1]
+})
+names(options.args) <- unlist(options.names)
+
+library("DESeq2")
+#library("ReportingTools")
+library("edgeR")
+#library("RColorBrewer")
+#library("gplots")
+#library("VennDiagram")
+#library("stringr")
+#library("plyr")
+
+par(mfrow=c(1,1))
+edgerfdr <- 0.001
+deseq2padj <- 0.001
+
+## General Setup
+trim.leading <- function (x)  sub("^\\s+", "", x)
+join <- function(x){y<-"";for (i in 1:length(x)){y<-paste(y,x[i])};return(trim.leading(y)) }
+
+designmat <- cbind(options.args$filenames,options.args$strain,options.args$cell,options.args$sex,options.args$fastq)
+designmat<-designmat[which(options.args$strain=="B"& options.args$fastq=="FALSE"),]
+inputfiles <- options.args$inputfiles[which(options.args$strain=="B"& options.args$fastq=="FALSE")]
+
+# Initialise blank count matrix and design matrix
+file <- inputfiles[1]
+x <- read.table(file,header=TRUE,as.is=TRUE)
+Count.Matrix <- data.frame(matrix(vector(),nrow=length(x$Gene)))
+TPM.Matrix <- data.frame(matrix(vector(),nrow=length(x$Gene)))
+
+for (i in 1:length(inputfiles)){
+  file <- inputfiles[i]
+  # Read table
+  x <- read.table(file,header=TRUE,as.is=TRUE)
+  Count.Matrix <- data.frame(Count.Matrix,x$EstimatedNumReads)
+  TPM.Matrix<- data.frame(Count.Matrix,x$TPM)
+}
+
+# Reformat designmatrix
+#designmat <- t(designmat)
+strain    <- factor(designmat[,2])
+cell      <- factor(designmat[,3])
+sex    <- factor(designmat[,4])
+colData <- data.frame(strain=strain,cell=cell,sex=sex)
+
+# set rownames of count matrix
+rownames(Count.Matrix) <- x$Gene
+
+# set colnames of Count matrix
+k <- 4
+tmp <-c(join(designmat[1,1:k]))
+for (i in 2:length(inputfiles)) {tmp <-c(tmp,join(designmat[i,1:k])) }
+colnames(Count.Matrix) <- tmp
+
+# Save Spikeins Seperately,then Remove Spikeins
+SpikeINS <- Count.Matrix[(row(Count.Matrix)[,1] %in% grep("ERCC",rownames(Count.Matrix))),]
+Count.Matrix <- Count.Matrix[!(row(Count.Matrix)[,1] %in% grep("ERCC",rownames(Count.Matrix))),]
+
+# Convert to integer counts
+integer.counts <- round(Count.Matrix,digits=0)
+
+write("DESQ2",stderr())
+## DESeq2
+################################################################################
+##WORKS
+dds <- DESeqDataSetFromMatrix(countData=integer.counts, colData=colData, design= ~ sex + cell)
+colData(dds)$sex  <- factor(colData(dds)$sex,levels=c("F","M"))
+colData(dds)$cell <- factor(colData(dds)$cell,levels=c("B","T"))
+colData(dds)$cell <- relevel(colData(dds)$cell, "B") # set B cell as base level
+colnames(dds) <- colnames(integer.counts)
+
+write("DESQ",stderr())
+
+# Perform DESeq2 analysis
+dds <- DESeq(dds)
+write("results",stderr())
+
+results.cell <- results(dds)
+print(results.cell)
+write("DTABLE",stderr())
+
+#save results as dtable for later analysis
+dtable <- results.cell
+dtable$padj[is.na(dtable$padj)] <- 1 # convert NA padj to 1
+
+write("edgeR",stderr())
+## EdgeR
+################################################################################
+
+
+# create Design matrix
+design <- model.matrix(object=~ sex + cell, data=colData)
+
+y <- DGEList(counts=integer.counts,genes=rownames(integer.counts))
+
+# Calculate Normal and Dispersion factors
+y <- calcNormFactors(y)
+y <- estimateGLMCommonDisp(y,design)
+y <- estimateGLMTrendedDisp(y,design)
+y <- estimateGLMTagwiseDisp(y,design)
+
+fit <- glmFit(y,design)
+lrt <- glmLRT(fit, coef="cellT") ## CHECK WHICH WAY ROUND EDGER IS TESTING
+
+## Make a table of results
+etable <- topTags(lrt, n=nrow(y))$table
+etable <- etable[order(etable$FDR), ]
+rownames(etable)<-etable$genes
+
+write("merge",stderr())
+# Comparison --------------------------------------------------------------
+
+merged <- merge(etable, dtable, by='row.names',all=TRUE)
+
+merged.subset <- subset(merged, padj<=deseq2padj & FDR<=edgerfdr)
+
+BLMR<-read.table(file="/nfs/users/nfs_r/rg12/B_LMRs.txt",header=TRUE)
+TLMR<-read.table(file="/nfs/users/nfs_r/rg12/T_LMRs.txt",header=TRUE)
+
+outfileB <- merge(merged.subset,BLMR,by.x="genes",by.y="Ensembl_Gene")
+outfileT <- merge(merged.subset,TLMR,by.x="genes",by.y="Ensembl_Gene")
+
+write.table(outfileB,file="BLMRs.txt",row.names=FALSE,sep=",")
+write.table(outfileT,file="TLMRs.txt",row.names=FALSE,sep=",")

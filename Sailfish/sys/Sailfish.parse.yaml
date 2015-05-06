@@ -1,0 +1,124 @@
+--- 
+bamtofq: 
+  cmd: "cd [% bamtofq %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;\tif [ [% datasource.fastq %] == \"FALSE\" ];\n\t\tthen\n\t\tif [ [% datasource.paired_end %] == \"TRUE\" ];\n\t\t\tthen\n\t\t\t\tbamtofastq filename=[% datasource.File %] gz=1 F=[% bamtofq.out_1.fq.gz %] F2=[% bamtofq.out_2.fq.gz %];\n\t\t\telse\n\t\t\t\tbamtofastq gz=1 filename=[% datasource.File %] > [% bamtofq.out_1.fq.gz %];\n\t\t\tfi;\n\t\telse\n\t\t\tcat [% datasource.File %]* > [% bamtofq.out_1.fq.gz %];\n\t\tfi 2>[% bamtofq.err %]"
+  condition: ~
+  cores: 4
+  mem: 1500
+  placeholders: 
+    - bamtofq
+    - datasource.fastq
+    - datasource.paired_end
+    - datasource.File
+    - bamtofq.out_1.fq.gz
+    - bamtofq.out_2.fq.gz
+    - datasource.File
+    - bamtofq.out_1.fq.gz
+    - datasource.File
+    - bamtofq.out_1.fq.gz
+    - bamtofq.err
+bl6fix: 
+  cmd: cd [% bl6fix %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %] 2>[% bl6fix.err %]
+  condition: once
+  placeholders: 
+    - bl6fix
+    - software.fasta_name_strip
+    - datasource.Sailfish
+    - bl6fix.file
+    - bl6fix.err
+castfix: 
+  cmd: cd [% castfix %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %] 2>[% castfix.err %]
+  condition: once
+  placeholders: 
+    - castfix
+    - software.fasta_name_strip
+    - datasource.Sailfish
+    - castfix.file
+    - castfix.err
+de: 
+  cmd: cd [% de %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; Rscript [% software.DEanalysis %] --inputfiles [% jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %] --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %] 2>[% de.err %]
+  condition: once
+  mem: 5000
+  placeholders: 
+    - de
+    - software.DEanalysis
+    - jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf
+    - jobs.datasource.Sex
+    - jobs.datasource.Strain
+    - jobs.datasource.Cell
+    - jobs.datasource.fastq
+    - jobs.datasource.Filename
+    - de.err
+sailfishIndexBL6: 
+  cmd: "cd [% sailfishIndexBL6 %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tmkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;\n\trm -R [% datasource.Sailfish %]/Indexes/B/transcriptome/*;\n\tsalmon --no-version-check index -t [% bl6fix.file %] -p 24  -i [% datasource.Sailfish %]/Indexes/B/transcriptome/;\n\trm [% bl6fix.file %]; touch [% sailfishIndexBL6.touch %] 2>[% sailfishIndexBL6.err %]"
+  condition: once
+  cores: 24
+  mem: 7500
+  placeholders: 
+    - sailfishIndexBL6
+    - datasource.Sailfish
+    - datasource.Sailfish
+    - bl6fix.file
+    - datasource.Sailfish
+    - bl6fix.file
+    - sailfishIndexBL6.touch
+    - sailfishIndexBL6.err
+sailfishIndexCast: 
+  cmd: "cd [% sailfishIndexCast %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; ls * | grep -v err | xargs rm -rf;\tmkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;\n\trm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;\n\tsalmon --no-version-check index -t [% castfix.file %] -p 32 -i [% datasource.Sailfish %]/Indexes/C/transcriptome/;\n\trm [% castfix.file %];touch [% sailfishIndexCast.touch %] 2>[% sailfishIndexCast.err %]"
+  condition: once
+  cores: 32
+  mem: 7500
+  placeholders: 
+    - sailfishIndexCast
+    - datasource.Sailfish
+    - datasource.Sailfish
+    - castfix.file
+    - datasource.Sailfish
+    - castfix.file
+    - sailfishIndexCast.touch
+    - sailfishIndexCast.err
+sailfishtranscriptome: 
+  cmd: "cd [% sailfishtranscriptome %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tls [% sailfishIndexBL6.touch %] [% sailfishIndexCast.touch %];\n\tset +o posix;\n\tbash << EOF\nsalmon --no-version-check quant -p 32 -i [% datasource.Sailfish %]/Indexes/[% datasource.Strain2 %]/transcriptome/ -o [% sailfishtranscriptome %] -l IU -1 <(gunzip -cf [% trimgalore.output2 %]) -2 <(gunzip -cf [% trimgalore.output4 %]) --biasCorrect -g [% input.Mus_musculus.GRCm38.79.gtf %] --useReadCompat;\nEOF 2>[% sailfishtranscriptome.err %]"
+  condition: ~
+  cores: 32
+  mem: 40000
+  outputfiles: 
+    - libFormatCounts.txt
+    - libParams
+    - logs
+    - quant_bias_corrected.genes.sf
+    - quant_bias_corrected.sf
+    - quant.genes.sf
+    - quant.sf
+  placeholders: 
+    - sailfishtranscriptome
+    - sailfishIndexBL6.touch
+    - sailfishIndexCast.touch
+    - datasource.Sailfish
+    - datasource.Strain2
+    - sailfishtranscriptome
+    - trimgalore.output2
+    - trimgalore.output4
+    - input.Mus_musculus.GRCm38.79.gtf
+    - sailfishtranscriptome.err
+trimgalore: 
+  cmd: "cd [% trimgalore %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tlength=$(gunzip -c [% bamtofq.out_1.fq.gz %] | head -2| tail -1 | wc -c);\n\tlength=$[length-11];\n\tif [ [% datasource.paired_end %] == \"TRUE\" ];\n\tthen\n\t\ttrim_galore --fastqc --gzip --length $length --paired --stringency 4 --trim1 [% bamtofq.out_1.fq.gz %] [% bamtofq.out_2.fq.gz %];\n\telse\n\t\ttrim_galore --fastqc --gzip --length $length --stringency 4 [% bamtofq.out_1.fq.gz %];\n\t\tmv out_1_trimmed.fq.gz out_1_val_1.fq.gz;\n\tfi 2>[% trimgalore.err %]"
+  condition: ~
+  cores: 3
+  mem: 2000
+  outputfiles: 
+    - out_1.fq.gz_trimming_report.txt
+    - out_1_val_1.fq.gz
+    - out_2.fq.gz_trimming_report.txt
+    - out_2_val_2.fq.gz
+    - out_1_val_1.html
+    - out_1_val_1.zip
+    - out_2_val_2.html
+    - out_2_val_2.zip
+  placeholders: 
+    - trimgalore
+    - bamtofq.out_1.fq.gz
+    - datasource.paired_end
+    - bamtofq.out_1.fq.gz
+    - bamtofq.out_2.fq.gz
+    - bamtofq.out_1.fq.gz
+    - trimgalore.err

@@ -1,0 +1,134 @@
+--- 
+bamtofastq: 
+  cmd: "cd [% bamtofastq %]; if [ [% datasource.fastq %] == \"FALSE\" ];then bamtofastq filename=[% datasource.File %] F=[% bamtofastq.mate1 %] F2=[% bamtofastq.mate2 %];\nfi 2>[% bamtofastq.err %]"
+  condition: ~
+  mem: 250
+  placeholders: 
+    - bamtofastq
+    - datasource.fastq
+    - datasource.File
+    - bamtofastq.mate1
+    - bamtofastq.mate2
+    - bamtofastq.err
+bl6fix: 
+  cmd: cd [% bl6fix %]; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/gencode.vM3.ERCC.fa -o [% bl6fix.file %] 2>[% bl6fix.err %]
+  condition: once
+  placeholders: 
+    - bl6fix
+    - software.fasta_name_strip
+    - datasource.Sailfish
+    - bl6fix.file
+    - bl6fix.err
+castfix: 
+  cmd: cd [% castfix %]; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %] 2>[% castfix.err %]
+  condition: once
+  placeholders: 
+    - castfix
+    - software.fasta_name_strip
+    - datasource.Sailfish
+    - castfix.file
+    - castfix.err
+de: 
+  cmd: cd [% de %]; Rscript [% software.DEanalysis %] --inputfiles [% jobs.tgm.output %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %] --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %] 2>[% de.err %]
+  condition: once
+  mem: 5000
+  placeholders: 
+    - de
+    - software.DEanalysis
+    - jobs.tgm.output
+    - jobs.datasource.Sex
+    - jobs.datasource.Strain
+    - jobs.datasource.Cell
+    - jobs.datasource.fastq
+    - jobs.datasource.Filename
+    - de.err
+mate1: 
+  cmd: "cd [% mate1 %]; if [ [% datasource.fastq %] == \"FALSE\" ];then fastx_trimmer -f 2 -i [% bamtofastq.mate1 %] |gzip -cf > [% mate1.file %];rm [% bamtofastq.mate1 %];\nelse ln -sf [% datasource.File %] [% mate1.file %];\nfi 2>[% mate1.err %]"
+  condition: ~
+  mem: 250
+  placeholders: 
+    - mate1
+    - datasource.fastq
+    - bamtofastq.mate1
+    - mate1.file
+    - bamtofastq.mate1
+    - datasource.File
+    - mate1.file
+    - mate1.err
+mate2: 
+  cmd: "cd [% mate2 %]; if [ [% datasource.fastq %] == \"FALSE\" ];then fastx_trimmer -f 2 -i [% bamtofastq.mate2 %] |gzip -cf > [% mate2.file %];rm [% bamtofastq.mate2 %];\nelse ln -sf [% datasource.File2 %] [% mate2.file %];\nfi 2>[% mate2.err %]"
+  condition: ~
+  mem: 250
+  placeholders: 
+    - mate2
+    - datasource.fastq
+    - bamtofastq.mate2
+    - mate2.file
+    - bamtofastq.mate2
+    - datasource.File2
+    - mate2.file
+    - mate2.err
+sailfishIndexBL6: 
+  cmd: "cd [% sailfishIndexBL6 %]; mkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;rm -R [% datasource.Sailfish %]/Indexes/B/transcriptome/*;\nsailfish --no-version-check index -t [% bl6fix.file %] -k 20 -p 12  -o [% datasource.Sailfish %]/Indexes/B/transcriptome/;\nrm [% bl6fix.file %]; touch [% sailfishIndexBL6.touch %] 2>[% sailfishIndexBL6.err %]"
+  condition: once
+  cores: 12
+  mem: 7500
+  placeholders: 
+    - sailfishIndexBL6
+    - datasource.Sailfish
+    - datasource.Sailfish
+    - bl6fix.file
+    - datasource.Sailfish
+    - bl6fix.file
+    - sailfishIndexBL6.touch
+    - sailfishIndexBL6.err
+sailfishIndexCast: 
+  cmd: "cd [% sailfishIndexCast %]; mkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;rm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;\nsailfish --no-version-check index -t [% castfix.file %] -k 20 -p 12 -o [% datasource.Sailfish %]/Indexes/C/transcriptome/;\nrm [% castfix.file %];touch [% sailfishIndexCast.touch %] 2>[% sailfishIndexCast.err %]"
+  condition: once
+  cores: 12
+  mem: 7500
+  placeholders: 
+    - sailfishIndexCast
+    - datasource.Sailfish
+    - datasource.Sailfish
+    - castfix.file
+    - datasource.Sailfish
+    - castfix.file
+    - sailfishIndexCast.touch
+    - sailfishIndexCast.err
+sailfishtranscriptome: 
+  cmd: "cd [% sailfishtranscriptome %]; ls [% sailfishIndexBL6.touch %] [% sailfishIndexCast.touch %];rm -r [% sailfishtranscriptome %]/*;[% software.sailfishrun %] -p [% datasource.paired_end %] -f [% datasource.fastq %] -s [% datasource.Sailfish %] -b [% datasource.Strain2 %] -t [% sailfishtranscriptome %] -m [% mate1.file %] -n [% mate2.file %];\nrm [% mate1.file %] [% mate2.file %] 2>[% sailfishtranscriptome.err %]"
+  condition: ~
+  cores: 12
+  mem: 40000
+  outputfiles: 
+    - quant_bias_corrected.sf
+    - quant.sf
+    - reads.count_info
+    - reads.sfc
+  placeholders: 
+    - sailfishtranscriptome
+    - sailfishIndexBL6.touch
+    - sailfishIndexCast.touch
+    - sailfishtranscriptome
+    - software.sailfishrun
+    - datasource.paired_end
+    - datasource.fastq
+    - datasource.Sailfish
+    - datasource.Strain2
+    - sailfishtranscriptome
+    - mate1.file
+    - mate2.file
+    - mate1.file
+    - mate2.file
+    - sailfishtranscriptome.err
+tgm: 
+  cmd: cd [% tgm %]; [% software.transcript_to_gene %] -s [% sailfishtranscriptome.output1 %] -o [% tgm.output %] -t /nfs/users/nfs_r/rg12/lustre109/transcriptomes/gencode.vM3.annotation.transcript.ERCC.gff3 2>[% tgm.err %]
+  condition: ~
+  mem: 200
+  placeholders: 
+    - tgm
+    - software.transcript_to_gene
+    - sailfishtranscriptome.output1
+    - tgm.output
+    - tgm.err

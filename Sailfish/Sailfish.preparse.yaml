@@ -1,0 +1,23 @@
+--- 
+bamtofastq.: "cd [% bamtofastq %]; if [ [% datasource.fastq %] == \"FALSE\" ];then bamtofastq filename=[% datasource.File %] F=[% bamtofastq.mate1 %] F2=[% bamtofastq.mate2 %];\nfi 2>[% bamtofastq.err %]"
+bamtofastq.mem: 250
+bl6fix.once: cd [% bl6fix %]; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/gencode.vM3.ERCC.fa -o [% bl6fix.file %] 2>[% bl6fix.err %]
+castfix.once: cd [% castfix %]; [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %] 2>[% castfix.err %]
+de.mem: 5000
+de.once: cd [% de %]; Rscript [% software.DEanalysis %] --inputfiles [% jobs.tgm.output %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %] --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %] 2>[% de.err %]
+mate1.: "cd [% mate1 %]; if [ [% datasource.fastq %] == \"FALSE\" ];then fastx_trimmer -f 2 -i [% bamtofastq.mate1 %] |gzip -cf > [% mate1.file %];rm [% bamtofastq.mate1 %];\nelse ln -sf [% datasource.File %] [% mate1.file %];\nfi 2>[% mate1.err %]"
+mate1.mem: 250
+mate2.: "cd [% mate2 %]; if [ [% datasource.fastq %] == \"FALSE\" ];then fastx_trimmer -f 2 -i [% bamtofastq.mate2 %] |gzip -cf > [% mate2.file %];rm [% bamtofastq.mate2 %];\nelse ln -sf [% datasource.File2 %] [% mate2.file %];\nfi 2>[% mate2.err %]"
+mate2.mem: 250
+sailfishIndexBL6.cores: 12
+sailfishIndexBL6.mem: 7500
+sailfishIndexBL6.once: "cd [% sailfishIndexBL6 %]; mkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;rm -R [% datasource.Sailfish %]/Indexes/B/transcriptome/*;\nsailfish --no-version-check index -t [% bl6fix.file %] -k 20 -p 12  -o [% datasource.Sailfish %]/Indexes/B/transcriptome/;\nrm [% bl6fix.file %]; touch [% sailfishIndexBL6.touch %] 2>[% sailfishIndexBL6.err %]"
+sailfishIndexCast.cores: 12
+sailfishIndexCast.mem: 7500
+sailfishIndexCast.once: "cd [% sailfishIndexCast %]; mkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;rm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;\nsailfish --no-version-check index -t [% castfix.file %] -k 20 -p 12 -o [% datasource.Sailfish %]/Indexes/C/transcriptome/;\nrm [% castfix.file %];touch [% sailfishIndexCast.touch %] 2>[% sailfishIndexCast.err %]"
+sailfishtranscriptome.: "cd [% sailfishtranscriptome %]; ls [% sailfishIndexBL6.touch %] [% sailfishIndexCast.touch %];rm -r [% sailfishtranscriptome %]/*;[% software.sailfishrun %] -p [% datasource.paired_end %] -f [% datasource.fastq %] -s [% datasource.Sailfish %] -b [% datasource.Strain2 %] -t [% sailfishtranscriptome %] -m [% mate1.file %] -n [% mate2.file %];\nrm [% mate1.file %] [% mate2.file %] 2>[% sailfishtranscriptome.err %]"
+sailfishtranscriptome.cores: 12
+sailfishtranscriptome.mem: 40000
+sailfishtranscriptome.output: quant_bias_corrected.sf  quant.sf  reads.count_info  reads.sfc
+tgm.: cd [% tgm %]; [% software.transcript_to_gene %] -s [% sailfishtranscriptome.output1 %] -o [% tgm.output %] -t /nfs/users/nfs_r/rg12/lustre109/transcriptomes/gencode.vM3.annotation.transcript.ERCC.gff3 2>[% tgm.err %]
+tgm.mem: 200

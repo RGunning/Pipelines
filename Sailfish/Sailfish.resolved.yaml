@@ -1,0 +1,112 @@
+--- 
+0: 
+  de: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job0/de; Rscript /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/software/DEanalysis --inputfiles /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job0/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job1/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job2/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job3/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job4/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job5/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job6/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job7/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job8/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job9/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job10/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job11/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job12/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job13/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job14/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job15/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job16/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job17/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job18/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job19/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job20/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job21/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job22/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job23/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job24/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job25/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job26/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job27/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job28/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job29/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job30/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job31/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job32/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job33/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job34/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job35/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job36/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job37/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job38/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job39/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job40/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job41/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job42/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job43/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job44/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job45/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job46/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job47/tgm/output /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job48/tgm/output --sex F F F F F F M M F F F M M M F F F M M M F F F M M F F M M M F F F M M M M M F F M M NA NA NA NA M F F --strain B B B BC BC BC C C C C C B B B B B B CB CB CB CB CB CB BC BC BC BC C C C C C C B B B CB CB CB CB BC BC B B B B B B B --cell B B B T T T T T T T T T T T T T T B B B B B B B B B B B B B B B B B B B T T T T T T HSC HSC HSC HSC B B B --fastq FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE TRUE TRUE TRUE TRUE TRUE TRUE TRUE --filenames 10966_8#3.bam 10966_8#2.bam 10966_8#1.bam 11049_8#54.bam 11049_8#53.bam 11049_8#52.bam 11049_7#41.bam 11049_7#40.bam 11049_6#30.bam 11049_6#29.bam 11049_6#28.bam 11049_5#18.bam 11049_5#17.bam 11049_5#16.bam 11049_4#6.bam 11049_4#5.bam 11049_4#4.bam 11049_3#87.bam 11049_3#86.bam 11049_3#85.bam 11049_2#75.bam 11049_2#74.bam 11049_2#73.bam 11049_1#62.bam 11049_1#61.bam 11048_8#50.bam 11048_8#49.bam 11048_7#39.bam 11048_7#38.bam 11048_7#37.bam 11048_6#27.bam 11048_6#26.bam 11048_6#25.bam 11048_5#15.bam 11048_5#14.bam 11048_5#13.bam 11114_8#89.bam 11114_8#88.bam 11114_7#77.bam 11114_7#76.bam 11114_6#65.bam 11114_6#64.bam SRR950187 SRR950188 SRR950189 SRR950190 SRR799543 SRR801087 SRR801088 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run1/job0/de/err
+    condition: once
+    mem: 5000
+    placeholders: 
+      - de
+      - software.DEanalysis
+      - jobs.tgm.output
+      - jobs.datasource.Sex
+      - jobs.datasource.Strain
+      - jobs.datasource.Cell
+      - jobs.datasource.fastq
+      - jobs.datasource.Filename
+      - de.err
+1: {}
+
+10: {}
+
+11: {}
+
+12: {}
+
+13: {}
+
+14: {}
+
+15: {}
+
+16: {}
+
+17: {}
+
+18: {}
+
+19: {}
+
+2: {}
+
+20: {}
+
+21: {}
+
+22: {}
+
+23: {}
+
+24: {}
+
+25: {}
+
+26: {}
+
+27: {}
+
+28: {}
+
+29: {}
+
+3: {}
+
+30: {}
+
+31: {}
+
+32: {}
+
+33: {}
+
+34: {}
+
+35: {}
+
+36: {}
+
+37: {}
+
+38: {}
+
+39: {}
+
+4: {}
+
+40: {}
+
+41: {}
+
+42: {}
+
+43: {}
+
+44: {}
+
+45: {}
+
+46: {}
+
+47: {}
+
+48: {}
+
+5: {}
+
+6: {}
+
+7: {}
+
+8: {}
+
+9: {}
+
