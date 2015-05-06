@@ -1,0 +1,39 @@
+--- 
+0: 
+  bamtofq: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tif [ TRUE == \"TRUE\" ];\n\t\tthen bamtofastq filename=/lustre/scratch105/vrpipe/import/10966_8#3.bam gz=1 F=/lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_1.fq.gz F2=/lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_2.fq.gz;\n\telse\n\t\tbamtofastq gz=1 filename=/lustre/scratch105/vrpipe/import/10966_8#3.bam > /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_1.fq.gz;\n\tfi; 2>/lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/err"
+    condition: ~
+    mem: 1500
+    placeholders: 
+      - bamtofq
+      - datasource.paired
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - datasource.File
+      - bamtofq.out_1.fq.gz
+      - bamtofq.err
+  starAlign: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/starAlign; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tif [ TRUE == \"TRUE\" ];\n\t\tthen /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --readFilesIn /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_1.fq.gz /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_2.fq.gz --readFilesCommand \"gzip -cd\" --outReadsUnmapped fastx;\n\telse /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --outReadsUnmapped fastx --readfilesIn /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/bamtofq/out_1.fq.gz --readFilesCommand \"gzip -cd\";\n\tfi; 2>/lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/starAlign/err"
+    condition: ~
+    cores: 12
+    mem: 50000
+    outputfiles: 
+      - Unmapped.out.mate1
+      - Unmapped.out.mate2
+    placeholders: 
+      - starAlign
+      - datasource.paired
+      - bamtofq.out_1.fq.gz
+      - bamtofq.out_2.fq.gz
+      - bamtofq.out_1.fq.gz
+      - starAlign.err
+  starIndex: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/starIndex; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tgunzip -f /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa.gz;\n\t/software/team113/algorithms/STAR2.4/STAR/bin/STAR --runThreadN 12 --runMode genomeGenerate --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --genomeFastaFiles /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;\n\tgzip /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;\n\ttouch /lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/starIndex/touch; 2>/lustre/scratch110/sanger/rg12/Pipeline/RNAUnal/output/run1/job0/starIndex/err"
+    condition: once
+    cores: 12
+    mem: 30000
+    placeholders: 
+      - starIndex
+      - starIndex.touch
+      - starIndex.err

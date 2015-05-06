@@ -1,0 +1,38 @@
+--- 
+bamtofq: 
+  cmd: "cd [% bamtofq %]; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tif [ [% datasource.paired %] == \"TRUE\" ];\n\t\tthen bamtofastq filename=[% datasource.File %] gz=1 F=[% bamtofq.out_1.fq.gz %] F2=[% bamtofq.out_2.fq.gz %];\n\telse\n\t\tbamtofastq gz=1 filename=[% datasource.File %] > [% bamtofq.out_1.fq.gz %];\n\tfi; 2>[% bamtofq.err %]"
+  condition: ~
+  mem: 1500
+  placeholders: 
+    - bamtofq
+    - datasource.paired
+    - datasource.File
+    - bamtofq.out_1.fq.gz
+    - bamtofq.out_2.fq.gz
+    - datasource.File
+    - bamtofq.out_1.fq.gz
+    - bamtofq.err
+starAlign: 
+  cmd: "cd [% starAlign %]; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tif [ [% datasource.paired %] == \"TRUE\" ];\n\t\tthen /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --readFilesIn [% bamtofq.out_1.fq.gz %] [% bamtofq.out_2.fq.gz %] --readFilesCommand \"gzip -cd\" --outReadsUnmapped fastx;\n\telse /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --outReadsUnmapped fastx --readfilesIn [% bamtofq.out_1.fq.gz %] --readFilesCommand \"gzip -cd\";\n\tfi; 2>[% starAlign.err %]"
+  condition: ~
+  cores: 12
+  mem: 50000
+  outputfiles: 
+    - Unmapped.out.mate1
+    - Unmapped.out.mate2
+  placeholders: 
+    - starAlign
+    - datasource.paired
+    - bamtofq.out_1.fq.gz
+    - bamtofq.out_2.fq.gz
+    - bamtofq.out_1.fq.gz
+    - starAlign.err
+starIndex: 
+  cmd: "cd [% starIndex %]; . /nfs/users/nfs_r/rg12/.bashrc;\ttrap SomeErrorHandler ERR;\n\tgunzip -f /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa.gz;\n\t/software/team113/algorithms/STAR2.4/STAR/bin/STAR --runThreadN 12 --runMode genomeGenerate --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --genomeFastaFiles /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;\n\tgzip /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;\n\ttouch [% starIndex.touch %]; 2>[% starIndex.err %]"
+  condition: once
+  cores: 12
+  mem: 30000
+  placeholders: 
+    - starIndex
+    - starIndex.touch
+    - starIndex.err

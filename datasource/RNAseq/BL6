@@ -1,0 +1,13 @@
+File	File2	Filename	INFO1	SLX	Info	ERP002223	Sex_full	Sex	Alignment_Strain	Strain	Strain2	Cell	Repeat	Lane	Sailfish	fastq	paired_end
+/lustre/scratch105/vrpipe/import/10966_8#3.bam	NA	10966_8#3.bam	B_BF2_A3_8176998	SLX	B_B_F_2_A3	ERP002223	Female	F	C57BL/6J	B	B	B	2	A3	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/10966_8#2.bam	NA	10966_8#2.bam	B_BF2_A2_8176997	SLX	B_B_F_2_A2	ERP002223	Female	F	C57BL/6J	B	B	B	2	A2	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/10966_8#1.bam	NA	10966_8#1.bam	B_BF2_A1_8176996	SLX	B_B_F_2_A1	ERP002223	Female	F	C57BL/6J	B	B	B	2	A1	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_5#18.bam	NA	11049_5#18.bam	T_BM2_B6_8324583	SLX	T_B_M_2_B6	ERP002223	Male	M	C57BL/6J	B	B	T	2	B6	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_5#17.bam	NA	11049_5#17.bam	T_BM2_B5_8324582	SLX	T_B_M_2_B5	ERP002223	Male	M	C57BL/6J	B	B	T	2	B5	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_5#16.bam	NA	11049_5#16.bam	T_BM2_B4_8324581	SLX	T_B_M_2_B4	ERP002223	Male	M	C57BL/6J	B	B	T	2	B4	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_4#6.bam	NA	11049_4#6.bam	T_BF1_A6_8324580	SLX	T_B_F_1_A6	ERP002223	Female	F	C57BL/6J	B	B	T	1	A6	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_4#5.bam	NA	11049_4#5.bam	T_BF1_A5_8324579	SLX	T_B_F_1_A5	ERP002223	Female	F	C57BL/6J	B	B	T	1	A5	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11049_4#4.bam	NA	11049_4#4.bam	T_BF1_A4_8324578	SLX	T_B_F_1_A4	ERP002223	Female	F	C57BL/6J	B	B	T	1	A4	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11048_5#15.bam	NA	11048_5#15.bam	B_BM1_B3_8322608	SLX	B_B_M_1_B3	ERP002223	Male	M	C57BL/6J	B	B	B	1	B3	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11048_5#14.bam	NA	11048_5#14.bam	B_BM1_B2_8322607	SLX	B_B_M_1_B2	ERP002223	Male	M	C57BL/6J	B	B	B	1	B2	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE
+/lustre/scratch105/vrpipe/import/11048_5#13.bam	NA	11048_5#13.bam	B_BM1_B1_8322606	SLX	B_B_M_1_B1	ERP002223	Male	M	C57BL/6J	B	B	B	1	B1	/nfs/users/nfs_r/rg12/lustre109/Sailfish	FALSE	TRUE

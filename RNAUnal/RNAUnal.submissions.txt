@@ -1,0 +1,15 @@
+2015-01-07T17:02:00	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-01-07T17:03:07	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-01-07T17:04:16	run[ 2 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-01-07T17:11:48	run[ 3 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-01-07T17:17:49	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-01-08T09:28:05	run[ 1 ] [ step-filter: starIndex ] [ job-filter: * ]	0
+2015-01-08T11:13:00	run[ 1 ] [ step-filter: starIndex ] [ job-filter: * ]	0
+2015-01-08T11:53:31	run[ 1 ] [ step-filter: starIndex ] [ job-filter: * ]	0
+2015-01-08T12:26:45	run[ 1 ] [ step-filter: starIndex ] [ job-filter: * ]	0
+2015-01-08T14:52:04	run[ 2 ] [ step-filter: bamtofq ] [ job-filter: * ]	0
+2015-01-09T14:32:35	run[ 2 ] [ step-filter: starAlign ] [ job-filter: * ]	0
+2015-01-09T14:59:12	run[ 2 ] [ step-filter: starAlign ] [ job-filter: * ]	0
+2015-01-09T16:07:47	run[ 2 ] [ step-filter: starAlign ] [ job-filter: * ]	0
+2015-01-09T16:31:22	run[ 2 ] [ step-filter: starAlign ] [ job-filter: * ]	0
+2015-01-16T15:23:31	run[ 1 ] [ step-filter: * ] [ job-filter: 0 ]	0

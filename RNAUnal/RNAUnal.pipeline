@@ -1,0 +1,31 @@
+starIndex.once . /nfs/users/nfs_r/rg12/.bashrc;
+	trap SomeErrorHandler ERR;
+	gunzip -f /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa.gz;
+	/software/team113/algorithms/STAR2.4/STAR/bin/STAR --runThreadN 12 --runMode genomeGenerate --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --genomeFastaFiles /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;
+	gzip /lustre/scratch109/sanger/rg12/genome/C57BL6J/mm10_C57BL6.fa;
+	touch [% starIndex.touch %];
+starIndex.mem 30000
+starIndex.cores 12
+
+bamtofq. . /nfs/users/nfs_r/rg12/.bashrc;
+	trap SomeErrorHandler ERR;
+	if [ [% datasource.paired %] == "TRUE" ];
+		then bamtofastq filename=[% datasource.File %] gz=1 F=[% bamtofq.out_1.fq.gz %] F2=[% bamtofq.out_2.fq.gz %];
+	else
+		bamtofastq gz=1 filename=[% datasource.File %] > [% bamtofq.out_1.fq.gz %];
+	fi;
+bamtofq.mem 1500
+
+starAlign. . /nfs/users/nfs_r/rg12/.bashrc;
+	trap SomeErrorHandler ERR;
+	if [ [% datasource.paired %] == "TRUE" ];
+		then /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --readFilesIn [% bamtofq.out_1.fq.gz %] [% bamtofq.out_2.fq.gz %] --readFilesCommand "gzip -cd" --outReadsUnmapped fastx;
+	else /software/team113/algorithms/STAR2.4/STAR/bin/STAR --clip3pNbases 1 --runThreadN 12 --genomeDir /lustre/scratch109/sanger/rg12/genome/STAR_C57BL6J --outReadsUnmapped fastx --readfilesIn [% bamtofq.out_1.fq.gz %] --readFilesCommand "gzip -cd";
+	fi;
+starAlign.mem 50000
+starAlign.cores 12
+starAlign.output Unmapped.out.mate1 Unmapped.out.mate2
+
+
+#/software/team113/algorithms/STAR2.4/STAR/bin/STAR
+#/software/team113/algorithms/salmon/sailfish/bin/salmon
