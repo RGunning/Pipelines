@@ -1,0 +1,144 @@
+--- 
+0: 
+  gen: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/gen;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tcp /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/input/ens_genes_location.csv ./;\n\t/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/software/make_gene_and_promoter_locations.pl; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/gen/err"
+    condition: once
+    dependents: []
+
+    mem: 4000
+    outputfiles: 
+      - ens_genes_and_promoter_distal.bed
+    placeholders: 
+      - gen
+      - input.ens_genes_location.csv
+      - software.make_gene_and_promoter_locations.pl
+      - gen.err
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/2/BM_B_4M_R-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job0/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+1: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job1/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/2/BM_T_4M_R-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job1/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job1/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job1/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+2: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job2/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_B_27M-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job2/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job2/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job2/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+3: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job3/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_B_27M-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job3/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job3/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job3/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+4: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job4/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_T_27M-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job4/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job4/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job4/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+5: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job5/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_T_27M-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job5/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job5/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job5/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+6: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job6/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_B_27ac-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job6/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job6/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job6/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+7: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job7/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_B_27ac-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job7/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job7/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job7/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+8: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job8/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_T_27ac-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job8/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job8/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job8/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err
+9: 
+  peaks: 
+    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job9/peaks;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a /lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_T_27ac-ChIPseqout_peaks.gappedPeak -b /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job9/gen/ens_genes_and_promoter_distal.bed > /lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job9/peaks/output.bed; 2>/lustre/scratch110/sanger/rg12/Pipeline/peakcorrel/output/run1/job9/peaks/err
+    condition: ~
+    dependents: 
+      - 0.gen
+    mem: 4000
+    placeholders: 
+      - peaks
+      - datasource.location
+      - gen.output1
+      - peaks.output.bed
+      - peaks.err

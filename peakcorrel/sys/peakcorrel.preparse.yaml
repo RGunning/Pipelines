@@ -1,0 +1,6 @@
+--- 
+gen.mem: 4000
+gen.once: "cd [% gen %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; \tcp [% input.ens_genes_location.csv %] ./;\n\t[% software.make_gene_and_promoter_locations.pl %]; 2>[% gen.err %]"
+gen.output: ens_genes_and_promoter_distal.bed
+peaks.: cd [% peaks %];  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; 	bedtools intersect -a [% gen.output1 %] -b [% datasource.location %] -loj > [% peaks.output.bed %]; 2>[% peaks.err %]
+peaks.mem: 4000

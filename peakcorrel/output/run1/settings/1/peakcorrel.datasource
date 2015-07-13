@@ -1,0 +1,11 @@
+job	location	mark
+0	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/2/BM_B_4M_R-ChIPseqout_peaks.gappedPeak	H3K4me3
+1	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/2/BM_T_4M_R-ChIPseqout_peaks.gappedPeak	H3K4me3
+2	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_B_27M-ChIPseqout_peaks.gappedPeak	H3K27me3
+3	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_B_27M-ChIPseqout_peaks.gappedPeak	H3K27me3
+4	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_T_27M-ChIPseqout_peaks.gappedPeak	H3K27me3
+5	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_T_27M-ChIPseqout_peaks.gappedPeak	H3K27me3
+6	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_B_27ac-ChIPseqout_peaks.gappedPeak	H3K27ac
+7	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_B_27ac-ChIPseqout_peaks.gappedPeak	H3K27ac
+8	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BF_T_27ac-ChIPseqout_peaks.gappedPeak	H3K27ac
+9	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsunmergedbroadpeak/3/BM_T_27ac-ChIPseqout_peaks.gappedPeak	H3K27ac
