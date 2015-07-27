@@ -1,7 +1,10 @@
-bl6fix.once [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %]
+bl6fix.once
+	[% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %]
 
 
-castfix.once [% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %]
+castfix.once
+	[% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %]
+
 
 sailfishIndexBL6.once
 	mkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;
@@ -11,7 +14,8 @@ sailfishIndexBL6.once
 sailfishIndexBL6.mem 7500
 sailfishIndexBL6.cores 24
 
-sailfishIndexCast.once ls * | grep -v err | xargs rm -rf;
+
+sailfishIndexCast.once
 	mkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;
 	rm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;
 	salmon --no-version-check index -t [% castfix.file %] -p 32 -i [% datasource.Sailfish %]/Indexes/C/transcriptome/;
@@ -19,12 +23,13 @@ sailfishIndexCast.once ls * | grep -v err | xargs rm -rf;
 sailfishIndexCast.mem 7500
 sailfishIndexCast.cores 32
 
+
 #bamtofastq. if [ [% datasource.fastq %] == "FALSE" ];
 #then bamtofastq filename=[% datasource.File %] F=[% bamtofastq.mate1.fq %] F2=[% bamtofastq.mate2.fq %];
 #fi
 #bamtofastq.mem 250
 
-bamtofq. . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;
+bamtofq.
 	if [ [% datasource.fastq %] == "FALSE" ];
 		then
 		if [ [% datasource.paired_end %] == "TRUE" ];
@@ -39,8 +44,7 @@ bamtofq. . /nfs/users/nfs_r/rg12/.bashrc;trap SomeErrorHandler ERR;
 bamtofq.cores 4
 bamtofq.mem 1500
 
-trimgalore. . /nfs/users/nfs_r/rg12/.bashrc;
-	trap SomeErrorHandler ERR;
+trimgalore.
 	length=$(gunzip -c [% bamtofq.out_1.fq.gz %] | head -2| tail -1 | wc -c);
 	length=$[length-11];
 	if [ [% datasource.paired_end %] == "TRUE" ];
