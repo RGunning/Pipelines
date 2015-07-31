@@ -2,9 +2,6 @@ ChIPseq/output
 Sailfish/output
 RNAUnal/output
 
-Sailfish/input
-ChIPseq/input
-
 Sailfish/symlink
 ChIPseq/symlink
 RNAUnal/symlink
