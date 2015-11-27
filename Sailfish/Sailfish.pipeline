@@ -1,24 +1,30 @@
 bl6fix.once
-	[% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %]
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/Sailfish/software/fasta_name_strip";
+	sailfishdir=([% jobs.datasource.Sailfish %]);
+	${prog} -i ${sailfishdir[0]}/../transcriptomes/Mus_musculus.GRCm38.cdna.all.ERCC.fa -o [% bl6fix.file %]
 
 
 castfix.once
-	[% software.fasta_name_strip %] -i [% datasource.Sailfish %]/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %]
+	sailfishdir=([% jobs.datasource.Sailfish %]);
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/Sailfish/software/fasta_name_strip";
+	${prog} -i ${sailfishdir[0]}/../transcriptomes/CASTEiJ_transcriptome70.ercc.fa -o [% castfix.file %]
 
 
 sailfishIndexBL6.once
-	mkdir -p [% datasource.Sailfish %]/Indexes/B/transcriptome/;
-	rm -R [% datasource.Sailfish %]/Indexes/B/transcriptome/*;
-	salmon --no-version-check index -t [% bl6fix.file %] -p 24  -i [% datasource.Sailfish %]/Indexes/B/transcriptome/;
+	sailfishdir=([% jobs.datasource.Sailfish %]);
+	mkdir -p ${sailfishdir[0]}/Indexes/B/transcriptome/;
+	rm -R ${sailfishdir[0]}/Indexes/B/transcriptome/*;
+	salmon --no-version-check index -t [% bl6fix.file %] -p 24  -i ${sailfishdir[0]}/Indexes/B/transcriptome/;
 	rm [% bl6fix.file %]; touch [% sailfishIndexBL6.touch %]
 sailfishIndexBL6.mem 7500
 sailfishIndexBL6.cores 24
 
 
 sailfishIndexCast.once
-	mkdir -p [% datasource.Sailfish %]/Indexes/C/transcriptome/;
-	rm -R [% datasource.Sailfish %]/Indexes/C/transcriptome/*;
-	salmon --no-version-check index -t [% castfix.file %] -p 32 -i [% datasource.Sailfish %]/Indexes/C/transcriptome/;
+	sailfishdir=([% jobs.datasource.Sailfish %]);
+	mkdir -p ${sailfishdir[0]}/Indexes/C/transcriptome/;
+	rm -R ${sailfishdir[0]}]/Indexes/C/transcriptome/*;
+	salmon --no-version-check index -t [% castfix.file %] -p 32 -i ${sailfishdir[0]}/Indexes/C/transcriptome/;
 	rm [% castfix.file %];touch [% sailfishIndexCast.touch %]
 sailfishIndexCast.mem 7500
 sailfishIndexCast.cores 32
@@ -88,6 +94,19 @@ sailfishtranscriptome.output libFormatCounts.txt  libParams  logs  quant_bias_co
 #tgm. [% software.transcript_to_gene %] -s [% sailfishtranscriptome.output1 %] -o [% tgm.output %] -t [% input.Mus_musculus.GRCm38.79.gtf %]
 #tgm.mem 200
 
-de.once Rscript [% software.DEanalysis %] --inputfiles [% jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %]
- --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %]
+de.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/Sailfish/software/DEanalysis";
+	Rscript ${prog} --inputfiles [% jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf %] --sex [% jobs.datasource.Sex %] --strain [% jobs.datasource.Strain %] --cell [% jobs.datasource.Cell %] --fastq [% jobs.datasource.fastq %] --filenames [% jobs.datasource.Filename %]
 de.mem 5000
+de.output Bexpressed.txt Texpressed.txt B0expressed.txt T0expressed.txt B1-100expressed.txt T1-100expressed.txt B100expressed.txt T100expressed.txt
+
+symlink.once . /nfs/users/nfs_r/rg12/.bashrc;
+	runnum=$(echo "[% de.output1 %]" |sed -r 's/.*run([0-9]+).*/\1/');
+	plite symlink -f Info -r $runnum -s de#Bexpressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#Texpressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#B0expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#T0expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#B1-100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#T1-100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#B100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;
+	plite symlink -f Info -r $runnum -s de#T100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;

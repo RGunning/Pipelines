@@ -1,21 +1,14 @@
 --- 
 0: 
-  de: 
-    cmd: cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/de;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; Rscript /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/software/DEanalysis --inputfiles /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job1/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job2/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job3/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job4/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job5/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job6/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job7/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job8/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job9/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job10/sailfishtranscriptome/quant_bias_corrected.genes.sf /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job11/sailfishtranscriptome/quant_bias_corrected.genes.sf --sex F F F M M M F F F M M M --strain B B B B B B B B B B B B --cell B B B T T T T T T B B B --fastq FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE --filenames 10966_8#3.bam 10966_8#2.bam 10966_8#1.bam 11049_5#18.bam 11049_5#17.bam 11049_5#16.bam 11049_4#6.bam 11049_4#5.bam 11049_4#4.bam 11048_5#15.bam 11048_5#14.bam 11048_5#13.bam 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/de/err
+  symlink: 
+    cmd: "cd /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/symlink;  ls * | grep -v err | xargs rm -rf;. /nfs/users/nfs_r/rg12/.bashrc;>&2 date;trap SomeErrorHandler ERR; . /nfs/users/nfs_r/rg12/.bashrc;\trunnum=$(echo \"/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/de/Bexpressed.txt\" |sed -r 's/.*run([0-9]+).*/\\1/');\n\tplite symlink -f Info -r $runnum -s de#Bexpressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#Texpressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#B0expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#T0expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#B1-100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#T1-100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#B100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/;\n\tplite symlink -f Info -r $runnum -s de#T100expressed.txt /lustre/scratch110/sanger/rg12/Pipeline/Sailfish/; 2>/lustre/scratch110/sanger/rg12/Pipeline/Sailfish/output/run2/job0/symlink/err"
     condition: once
     dependents: []
 
-    mem: 5000
     placeholders: 
-      - de
-      - software.DEanalysis
-      - jobs.sailfishtranscriptome.quant_bias_corrected.genes.sf
-      - jobs.datasource.Sex
-      - jobs.datasource.Strain
-      - jobs.datasource.Cell
-      - jobs.datasource.fastq
-      - jobs.datasource.Filename
-      - de.err
+      - symlink
+      - de.output1
+      - symlink.err
 1: {}
 
 10: {}

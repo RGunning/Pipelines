@@ -11,7 +11,7 @@ options.names <- lapply(listoptions,function(x){
   unlist(strsplit(x, ' '))[1]
 })
 names(options.args) <- unlist(options.names)
-
+print(options.args)
 library("DESeq2")
 #library("ReportingTools")
 library("edgeR")
@@ -26,7 +26,7 @@ edgerfdr <- 0.001
 deseq2padj <- 0.001
 
 designmat <- cbind(options.args$filenames,options.args$strain,options.args$cell,options.args$sex,options.args$fastq)
-designmat<-designmat[which(options.args$strain=="B"& options.args$fastq=="FALSE"),]
+designmat<-designmat[which(options.args$strain=="B" & options.args$fastq=="FALSE"),]
 inputfiles <- options.args$inputfiles[which(options.args$strain=="B"& options.args$fastq=="FALSE")]
 
 # Reformat designmatrix
@@ -114,46 +114,46 @@ merged <- merge(etable, dtable, by='row.names',all=TRUE)
 
 #merged.subset <- subset(merged, padj<=deseq2padj & FDR<=edgerfdr)
 
-BLMR<-read.table(file="/nfs/users/nfs_r/rg12/B_LMRs.txt",header=TRUE)
-TLMR<-read.table(file="/nfs/users/nfs_r/rg12/T_LMRs.txt",header=TRUE)
+#BLMR<-read.table(file="/nfs/users/nfs_r/rg12/B_LMRs.txt",header=TRUE)
+#TLMR<-read.table(file="/nfs/users/nfs_r/rg12/T_LMRs.txt",header=TRUE)
 
-pvalueB <- merge(merged,BLMR,by.x="genes",by.y="Ensembl_Gene")
-pvalueT <- merge(merged,TLMR,by.x="genes",by.y="Ensembl_Gene")
-
-TPMB <- merge(TPM.Matrix,BLMR,by.x="row.names",by.y="Ensembl_Gene")
-TPMT <- merge(TPM.Matrix,TLMR,by.x="row.names",by.y="Ensembl_Gene")
-
-TPMBmeanB <- rowMeans(TPMB[,which(cell=="B")+1], na.rm = FALSE, dims = 1)
-TPMBmeanT <- rowMeans(TPMB[,which(cell=="T")+1], na.rm = FALSE, dims = 1)
-
-TPMTmeanB <- rowMeans(TPMT[,which(cell=="B")+1], na.rm = FALSE, dims = 1)
-TPMTmeanT <- rowMeans(TPMT[,which(cell=="T")+1], na.rm = FALSE, dims = 1)
-
-outfileBtmp <- data.frame(Gene=TPMB$Gene, Ensembl_ID=TPMB$Row.names, Type=TPMB$Type ,
-                          place=TPMB$place,chr=TPMB$chr, Mean_TPM_Bcell=TPMBmeanB, 
-                          Mean_TPM_Tcell=TPMBmeanT)
-outfileBtmp2 <- merge(outfileBtmp,pvalueB,by.x="Ensembl_ID",by.y="genes")
-outfileB <- data.frame(Gene=outfileBtmp2$Gene.x, Ensembl_ID=outfileBtmp2$Ensembl_ID, 
-                       Type=outfileBtmp2$Type.x ,place=outfileBtmp2$place.x,chr=outfileBtmp2$chr.x,
-                       Mean_TPM_Bcell=outfileBtmp2$Mean_TPM_Bcell, Mean_TPM_Tcell=outfileBtmp2$Mean_TPM_Tcell, 
-                       edgeR_FC=outfileBtmp2$logFC ,edgeR_FDR=outfileBtmp2$FDR , DESeq2_FC=outfileBtmp2$FoldChange , 
-                       DESeq2_padj=outfileBtmp2$padj)
-
-outfileTtmp <- data.frame(Gene=TPMT$Gene, Ensembl_ID=TPMT$Row.names,  Type=TPMT$Type ,
-                          place=TPMT$place,chr=TPMT$chr, Mean_TPM_Bcell=TPMTmeanB, 
-                          Mean_TPM_Tcell=TPMTmeanT)
-outfileTtmp2 <- merge(outfileTtmp,pvalueT,by.x="Ensembl_ID",by.y="genes")
-outfileT <- data.frame(Gene=outfileTtmp2$Gene.x, Ensembl_ID=outfileTtmp2$Ensembl_ID, 
-                       Type=outfileTtmp2$Type.x ,place=outfileTtmp2$place.x,chr=outfileTtmp2$chr.x, 
-                       Mean_TPM_Bcell=outfileTtmp2$Mean_TPM_Bcell, Mean_TPM_Tcell=outfileTtmp2$Mean_TPM_Tcell, 
-                       edgeR_FC=outfileTtmp2$logFC ,edgeR_FDR=outfileTtmp2$FDR , DESeq2_FC=outfileTtmp2$FoldChange , 
-                       DESeq2_padj=outfileTtmp2$padj)
-
-write.table(outfileB,file="BLMRs.txt",row.names=FALSE,col.names = TRUE,sep=",")
-write.table(outfileT,file="TLMRs.txt",row.names=FALSE,col.names = TRUE,sep=",")
-
-write.table(TPMB,"B_TPM.txt",row.names=FALSE,col.names = TRUE,sep=",")
-write.table(TPMT,"T_TPM.txt",row.names=FALSE,col.names = TRUE,sep=",")
+# pvalueB <- merge(merged,BLMR,by.x="genes",by.y="Ensembl_Gene")
+# pvalueT <- merge(merged,TLMR,by.x="genes",by.y="Ensembl_Gene")
+# 
+# TPMB <- merge(TPM.Matrix,BLMR,by.x="row.names",by.y="Ensembl_Gene")
+# TPMT <- merge(TPM.Matrix,TLMR,by.x="row.names",by.y="Ensembl_Gene")
+# 
+# TPMBmeanB <- rowMeans(TPMB[,which(cell=="B")+1], na.rm = FALSE, dims = 1)
+# TPMBmeanT <- rowMeans(TPMB[,which(cell=="T")+1], na.rm = FALSE, dims = 1)
+# 
+# TPMTmeanB <- rowMeans(TPMT[,which(cell=="B")+1], na.rm = FALSE, dims = 1)
+# TPMTmeanT <- rowMeans(TPMT[,which(cell=="T")+1], na.rm = FALSE, dims = 1)
+# 
+# outfileBtmp <- data.frame(Gene=TPMB$Gene, Ensembl_ID=TPMB$Row.names, Type=TPMB$Type ,
+#                           place=TPMB$place,chr=TPMB$chr, Mean_TPM_Bcell=TPMBmeanB, 
+#                           Mean_TPM_Tcell=TPMBmeanT)
+# outfileBtmp2 <- merge(outfileBtmp,pvalueB,by.x="Ensembl_ID",by.y="genes")
+# outfileB <- data.frame(Gene=outfileBtmp2$Gene.x, Ensembl_ID=outfileBtmp2$Ensembl_ID, 
+#                        Type=outfileBtmp2$Type.x ,place=outfileBtmp2$place.x,chr=outfileBtmp2$chr.x,
+#                        Mean_TPM_Bcell=outfileBtmp2$Mean_TPM_Bcell, Mean_TPM_Tcell=outfileBtmp2$Mean_TPM_Tcell, 
+#                        edgeR_FC=outfileBtmp2$logFC ,edgeR_FDR=outfileBtmp2$FDR , DESeq2_FC=outfileBtmp2$FoldChange , 
+#                        DESeq2_padj=outfileBtmp2$padj)
+# 
+# outfileTtmp <- data.frame(Gene=TPMT$Gene, Ensembl_ID=TPMT$Row.names,  Type=TPMT$Type ,
+#                           place=TPMT$place,chr=TPMT$chr, Mean_TPM_Bcell=TPMTmeanB, 
+#                           Mean_TPM_Tcell=TPMTmeanT)
+# outfileTtmp2 <- merge(outfileTtmp,pvalueT,by.x="Ensembl_ID",by.y="genes")
+# outfileT <- data.frame(Gene=outfileTtmp2$Gene.x, Ensembl_ID=outfileTtmp2$Ensembl_ID, 
+#                        Type=outfileTtmp2$Type.x ,place=outfileTtmp2$place.x,chr=outfileTtmp2$chr.x, 
+#                        Mean_TPM_Bcell=outfileTtmp2$Mean_TPM_Bcell, Mean_TPM_Tcell=outfileTtmp2$Mean_TPM_Tcell, 
+#                        edgeR_FC=outfileTtmp2$logFC ,edgeR_FDR=outfileTtmp2$FDR , DESeq2_FC=outfileTtmp2$FoldChange , 
+#                        DESeq2_padj=outfileTtmp2$padj)
+# 
+# write.table(outfileB,file="BLMRs.txt",row.names=FALSE,col.names = TRUE,sep=",")
+# write.table(outfileT,file="TLMRs.txt",row.names=FALSE,col.names = TRUE,sep=",")
+# 
+# write.table(TPMB,"B_TPM.txt",row.names=FALSE,col.names = TRUE,sep=",")
+# write.table(TPMT,"T_TPM.txt",row.names=FALSE,col.names = TRUE,sep=",")
 
 write.table(Count.Matrix,"CountMatrix.txt",row.names=TRUE,col.names=TRUE,sep=",")
 
@@ -165,3 +165,11 @@ rownames(TPMmean) <- rownames(TPM.Matrix)
 outfile <- merge(merged,TPMmean, by.x="genes", by.y="row.names")
 write.table(outfile,"All.txt",row.names=FALSE,col.names=TRUE,sep=",")
 
+write.table(outfile$genes[outfile$TPMmeanB>1],"Bexpressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanT>1],"Texpressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanB<1],"B0expressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanT<1],"T0expressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanB>1 & outfile$TPMmeanB<=100],"B1-100expressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanT>1 & outfile$TPMmeanB<=100],"T1-100expressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanB>100],"B100expressed.txt",row.names=F,col.names=F,sep=",",quote = F)
+write.table(outfile$genes[outfile$TPMmeanT>100],"T100expressed.txt",row.names=F,col.names=F,sep=",",quote = F)

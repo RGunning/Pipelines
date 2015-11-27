@@ -109,3 +109,21 @@
 2015-04-30T17:05:54	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
 2015-05-01T15:43:03	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
 2015-05-01T16:03:30	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-19T17:30:54	run[ 3 ] [ step-filter: de ] [ job-filter: * ]	smoke-test
+2015-11-19T17:31:11	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	smoke-test
+2015-11-23T14:18:24	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:21:19	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:22:26	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:23:24	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:23:58	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:26:17	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:26:33	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:29:16	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:35:57	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:37:46	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:39:28	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:43:47	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-23T14:47:35	run[ 2 ] [ step-filter: de symlink ] [ job-filter: * ]	0
+2015-11-23T14:58:32	run[ 2 ] [ step-filter: symlink ] [ job-filter: * ]	0
+2015-11-25T14:28:52	run[ 2 ] [ step-filter: de ] [ job-filter: * ]	0
+2015-11-25T14:41:17	run[ 2 ] [ step-filter: symlink ] [ job-filter: * ]	0

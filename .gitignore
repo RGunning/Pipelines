@@ -5,3 +5,5 @@ RNAUnal/output
 Sailfish/symlink
 ChIPseq/symlink
 RNAUnal/symlink
+
+*.yaml
