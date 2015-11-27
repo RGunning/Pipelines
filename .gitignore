@@ -1,9 +1,14 @@
-ChIPseq/output
-Sailfish/output
-RNAUnal/output
+tmp/
+lsfout/
+ChIPseq/output/
+Sailfish/output/
+RNAUnal/output/
+ChIPseqAnalysis/output/
 
-Sailfish/symlink
-ChIPseq/symlink
-RNAUnal/symlink
+
+Sailfish/symlink/
+ChIPseq/symlink/
+RNAUnal/symlink/
 
 *.yaml
+*.preparse.yaml*
