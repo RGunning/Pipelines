@@ -4,7 +4,8 @@ ChIPseq/output/
 Sailfish/output/
 RNAUnal/output/
 ChIPseqAnalysis/output/
-
+LMR_PEAK/output/
+peakcorrel/output/
 
 Sailfish/symlink/
 ChIPseq/symlink/
