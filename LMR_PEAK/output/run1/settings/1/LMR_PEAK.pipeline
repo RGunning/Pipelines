@@ -1,0 +1,26 @@
+step1.
+	# fix chromosomal naming
+	sed 's/chr//g' [% datasource.Peaks %] > [% step1.gappedPeak.bed %];
+	#restrict to gene co-ordinates
+	bedtools intersect -a [% step1.gappedPeak.bed %] -b [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] > [% step1.genic.bed %];
+	# Intersect Peaks with LMRs requiring atleast 80% overlap of Peak or LMR
+	bedtools intersect -a [% step1.genic.bed %] -b /lustre/scratch110/sanger/rg12/Pipeline/LMPR_PEAK/input/[% datasource.LMR %] -f 0.8 -F 0.8 -e > [% step1.LMR_intersect.bed %];
+
+
+step2.
+	R --vanilla > [% step2.out %] <<-"RSCRIPT"
+		library(ggplot2);
+		LMR_intersect <- read.table("[% step1.LMR_intersect.bed %]",sep="\t");
+
+		intergenic <- read.table("[% step2.intergenic.bed %]",sep="\t");
+		genic_length <- genic$V3-genic$V2;
+		intergenic_length <- intergenic$V3-intergenic$V2;
+		df <- data.frame(length =
+			c(genic_length,intergenic_length),
+			location=c(rep_len('genic',length(genic_length)),rep_len('intergenic',length(intergenic_length))));
+		pdf('[% step2.density.pdf %]',width = 6, height = 4,bg = "transparent");
+		ggplot(df, aes(x=length)) + geom_density(aes(group=location, colour=location, fill=location), alpha=0.3) + scale_x_log10();
+		dev.off();
+		t.test(df$values ~ df$ind);
+	RSCRIPT
+	:

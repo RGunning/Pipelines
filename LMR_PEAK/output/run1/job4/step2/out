@@ -1,0 +1,62 @@
+
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(ggplot2);
+> LMR_intersect <- read.table("/lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/output/run1/job4/step1/LMR_intersect.bed",sep="\t");
+> intersect_length <-  LMR_intersect$V3- LMR_intersect$V2;
+> df <- data.frame(length =intersect_length, location=rep_len('intersect',length(intersect_length)));
+> pdf('/lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/output/run1/job4/step2/density.pdf',width = 6, height = 4,bg = "transparent");
+> ggplot(df, aes(x=length)) + geom_density(aes(group=location, colour=location, fill=location), alpha=0.3) + scale_x_log10();
+> dev.off();
+null device 
+          1 
+> summary(df$length);
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      1     462     760    1414    1449   21390 
+> #t.test(df$values ~ df$ind);
+> library(stringr);
+> Peaks <- read.table("/lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/output/run1/job4/step1/PeaksPerGene.bed",header = F,sep = "\t",as.is = T);
+> Peaks <- Peaks[Peaks$V13 != ".",];
+> Peaks <- data.frame(GeneId=str_match(Peaks$V9,"gene_id ([0-9A-Za-z]+)")[,2], GeneName=str_match(Peaks$V9,"gene_name ([0-9A-Za-z]+)")[,2], length = Peaks$V12 - Peaks$V11);
+> PeaksPerGene <- aggregate( length ~ GeneName + GeneId, Peaks, sum);
+> LMR <- read.table("/lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/output/run1/job4/step1/LMRPerGene.bed",header = F,sep = "\t",as.is = T);
+> LMR <- LMR[LMR$V13 != ".",];
+> LMR <- data.frame(GeneId=str_match(LMR$V9,"gene_id ([0-9A-Za-z]+)")[,2], GeneName=str_match(LMR$V9,"gene_name ([0-9A-Za-z]+)")[,2], length = LMR$V12 - LMR$V11);
+> LMRPerGene <- aggregate( length ~ GeneName + GeneId, LMR, sum);
+> genicMerge <- merge(PeaksPerGene,LMRPerGene,by = 'GeneId',all=T);
+> #replace na with 0
+> genicMerge$length.x[is.na(genicMerge$length.x)] <- 0;
+> genicMerge$length.y[is.na(genicMerge$length.y)] <- 0;
+> pdf('/lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/output/run1/job4/step2/LMRvsPeak.pdf',width = 6, height = 4,bg = "transparent");
+> ggplot(genicMerge, aes(length.x,length.y)) + geom_point(alpha = 1/5,colour='blue') + scale_x_log10() + scale_y_log10() + labs(x = "Total Genic Peak Length",y = "Total Genic LMR Length");
+> dev.off();
+null device 
+          1 
+> cor.test(genicMerge$length.x,genicMerge$length.y);
+
+	Pearson's product-moment correlation
+
+data:  genicMerge$length.x and genicMerge$length.y
+t = 79.269, df = 19953, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.4787616 0.4998663
+sample estimates:
+      cor 
+0.4893856 
+
+> 

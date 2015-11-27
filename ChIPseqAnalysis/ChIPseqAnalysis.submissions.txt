@@ -1,0 +1,29 @@
+2015-11-20T16:13:28	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-11-23T13:07:01	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
+2015-11-23T13:10:48	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:19:25	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:33:35	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:33:51	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:38:05	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:40:26	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:43:45	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:45:19	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T13:47:23	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T14:09:56	run[ 1 ] [ step-filter: ngsavgpromoter ] [ job-filter: * ]	0
+2015-11-23T14:14:56	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T15:04:51	run[ 1 ] [ step-filter: ngsavgexpr ] [ job-filter: * ]	0
+2015-11-23T15:15:00	run[ 1 ] [ step-filter: step1 ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-23T15:37:00	run[ 1 ] [ step-filter: ngsavgoverpromoter ] [ job-filter: * ]	0
+2015-11-25T15:12:55	run[ 1 ] [ step-filter: ngsavgcategoryB ] [ job-filter: * ]	smoke-test
+2015-11-25T15:14:00	run[ 1 ] [ step-filter: ngsavgcategoryB ] [ job-filter: * ]	smoke-test
+2015-11-25T15:17:47	run[ 1 ] [ step-filter: ngsavgcategoryB ] [ job-filter: * ]	smoke-test
+2015-11-25T15:34:59	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T15:46:21	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T16:00:25	run[ 1 ] [ step-filter: ngsavgcategoryB ] [ job-filter: * ]	0
+2015-11-25T16:03:00	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T16:05:38	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T16:07:02	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T16:09:58	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T16:22:53	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T17:16:58	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0
+2015-11-25T18:33:39	run[ 1 ] [ step-filter: ngsavgcategoryB ngsavgcategoryT ] [ job-filter: * ]	0

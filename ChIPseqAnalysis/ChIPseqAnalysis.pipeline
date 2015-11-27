@@ -1,0 +1,235 @@
+step1.once
+	cat [% input.4M36M_Bammerge %] [% input.27ac_Bammerge %] > [% step1.bamfiles %];
+	cat [% input.4M36M_fragmentlength %] [% input.27ac_fragmentlength %] > [% step1.fragmentlength %];
+	cat [% input.4M36M_macspeaks %] [% input.27ac_macspeaks %] > [% step1.macsfiles %];
+
+
+ngsavg.
+	touch [% datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	#
+	sonication=([% datasource.sonication %]);
+	PD=$PD[% datasource.name %];
+	if [ -z $PD ];then PD=${sonication[0]}; fi;
+	#
+	treat=($sample[% datasource.comp %]B $sample[% datasource.comp %]T);
+	input=($input[% datasource.comp %]B $input[% datasource.comp %]T);
+	#
+	echo -e "${treat[0]}:${input[0]}	-1	\"${cell[0]} Cell\"	${PD}	green" > [% ngsavg.config.txt %];
+	echo -e "${treat[1]}:${input[1]}	-1	\"${cell[1]} Cell\"	${PD}	blue" >> [% ngsavg.config.txt %];
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavg.config.txt %] -O out -L 3000 -CO blue:white:red -P 5;
+ngsavg.cores 5
+ngsavg.mem 5000
+
+
+ngsavgpromoter.
+	touch [% datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	#
+	sonication=([% datasource.sonication %]);
+	PD=$PD[% datasource.name %];
+	if [ -z $PD ];then PD=${sonication[0]}; fi;
+	#
+	treat=($sample[% datasource.comp %]B $sample[% datasource.comp %]T);
+	input=($input[% datasource.comp %]B $input[% datasource.comp %]T);
+	#
+	echo -e "${treat[0]}:${input[0]}	-1	\"B Cell\"	${PD}	green" > [% ngsavgpromoter.config.txt %];
+	echo -e "${treat[1]}:${input[1]}	-1	\"T Cell\"	${PD}	blue" >> [% ngsavgpromoter.config.txt %];
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgpromoter.config.txt %] -L 2000 -O out -CO blue:white:red -P 5;
+ngsavgpromoter.cores 5
+ngsavgpromoter.mem 5000
+
+
+ngsavgoverpromoter.
+	touch [% datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	source [% step1.macsfiles %];
+	#
+	sonication=([% datasource.sonication %]);
+	PD=$PD[% datasource.name %];
+	if [ -z $PD ];then PD=${sonication[0]}; fi;
+	#
+	treat=($sample[% datasource.comp %]B $sample[% datasource.comp %]T);
+	input=($input[% datasource.comp %]B $input[% datasource.comp %]T);
+	peak=($peak[% datasource.comp %]B $peak[% datasource.comp %]T);
+	sed 's/chr//g' ${peak[0]} | bedtools sort > [% ngsavgoverpromoter.0.bed %];
+	sed 's/chr//g' ${peak[1]} | bedtools sort > [% ngsavgoverpromoter.1.bed %];
+	bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% ngsavgoverpromoter.0.bed %] | [% software.gtf2txt.py %] > [% ngsavgoverpromoter.genes.0.txt %];
+	bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% ngsavgoverpromoter.1.bed %] | [% software.gtf2txt.py %] > [% ngsavgoverpromoter.genes.1.txt %];
+	#
+	echo -e "${treat[0]}:${input[0]}	[% ngsavgoverpromoter.genes.0.txt %]	\"B Cell\"	${PD}	green" > [% ngsavgoverpromoter.config.txt %];
+	echo -e "${treat[1]}:${input[1]}	[% ngsavgoverpromoter.genes.1.txt %]	\"T Cell\"	${PD}	blue" >> [% ngsavgoverpromoter.config.txt %];
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgoverpromoter.config.txt %] -L 2000 -O out -CO blue:white:red -P 5;
+ngsavgoverpromoter.cores 5
+ngsavgoverpromoter.mem 5000
+
+
+ngsavgexpr.
+	touch [% datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	#
+	sonication=([% datasource.sonication %]);
+	PD=$PD[% datasource.name %];
+	if [ -z $PD ];then PD=${sonication[0]}; fi;
+	#
+	treat=($sample[% datasource.comp %]B $sample[% datasource.comp %]T);
+	input=($input[% datasource.comp %]B $input[% datasource.comp %]T);
+	#
+	echo -e "${treat[0]}:${input[0]}	[% input.Bexressed.txt %]	\"B Cell\"	${PD}	green" > [% ngsavgexpr.config.txt %];
+	echo -e "${treat[1]}:${input[1]}	[% input.Texressed.txt %]	\"T Cell\"	${PD}	blue" >> [% ngsavgexpr.config.txt %];
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgexpr.config.txt %] -L 2000 -O out -CO blue:white:red -P 5;
+ngsavgexpr.cores 5
+ngsavgexpr.mem 5000
+
+
+ngsavgcategoryB.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gtf2txt.py";
+	touch [% jobs.datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	source [% step1.macsfiles %];
+	#
+	sort -o [% ngsavgcategoryB.0expressed.txt %] [% input.B0expressed.txt %]
+	sort -o [% ngsavgcategoryB.1-100expressed.txt %] [% input.B1-100expressed.txt %]
+	sort -o [% ngsavgcategoryB.100expressed.txt %] [% input.B100expressed.txt %]
+	#
+	PD=([% jobs.datasource.name %]);
+	treat=([% jobs.datasource.comp %]);
+	input=([% jobs.datasource.comp %]);
+	peak=([% jobs.datasource.comp %]);
+	mark=([% jobs.datasource.mark %]);
+	cnt=${#PD[@]};
+	for ((i=0;i<cnt;i++)); do
+		PD[i]=$(eval echo "\$PD${PD[i]}");
+		treat[i]=$(eval echo "\$sample${treat[i]}B");
+		input[i]=$(eval echo "\$input${input[i]}B");
+		peak[i]=$(eval echo "\$peak${peak[i]}B");
+		sed 's/chr//g' ${peak[i]} | bedtools sort > ${i}.bed;
+		bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b ${i}.bed | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
+		comm -12 [% ngsavgcategoryB.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
+		comm -12 [% ngsavgcategoryB.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
+		comm -12 [% ngsavgcategoryB.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
+		echo -e "${treat[i]}:${input[i]}	genes.0.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.0.txt %];
+		echo -e "${treat[i]}:${input[i]}	genes.1.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.1.txt %];
+		echo -e "${treat[i]}:${input[i]}	genes.100.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.100.txt %];
+	done
+	#
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryB.config.0.txt %] -L 5000 -O out0 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryB.config.1.txt %] -L 5000 -O out1 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryB.config.100.txt %] -L 5000 -O out2 -CO blue:white:red -P 5;
+ngsavgcategoryB.cores 5
+ngsavgcategoryB.mem 5000
+
+ngsavgcategoryT.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gtf2txt.py";
+	touch [% jobs.datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	source [% step1.macsfiles %];
+	#
+	sort -o [% ngsavgcategoryT.0expressed.txt %] [% input.T0expressed.txt %]
+	sort -o [% ngsavgcategoryT.1-100expressed.txt %] [% input.T1-100expressed.txt %]
+	sort -o [% ngsavgcategoryT.100expressed.txt %] [% input.T100expressed.txt %]
+	#
+	PD=([% jobs.datasource.name %]);
+	treat=([% jobs.datasource.comp %]);
+	input=([% jobs.datasource.comp %]);
+	peak=([% jobs.datasource.comp %]);
+	mark=([% jobs.datasource.mark %]);
+	cnt=${#PD[@]};
+	for ((i=0;i<cnt;i++)); do
+		PD[i]=$(eval echo "\$PD${PD[i]}");
+		treat[i]=$(eval echo "\$sample${treat[i]}T");
+		input[i]=$(eval echo "\$input${input[i]}T");
+		peak[i]=$(eval echo "\$peak${peak[i]}T");
+		sed 's/chr//g' ${peak[i]} | bedtools sort > ${i}.bed;
+bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b ${i}.bed | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
+		comm -12 [% ngsavgcategoryT.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
+		comm -12 [% ngsavgcategoryT.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
+		comm -12 [% ngsavgcategoryT.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
+		echo -e "${treat[i]}:${input[i]}	genes.0.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.0.txt %];
+		echo -e "${treat[i]}:${input[i]}	genes.1.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.1.txt %];
+		echo -e "${treat[i]}:${input[i]}	genes.100.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.100.txt %];
+	done
+	#
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryT.config.0.txt %] -L 5000 -O out0 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryT.config.1.txt %] -L 5000 -O out1 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryT.config.100.txt %] -L 5000 -O out2 -CO blue:white:red -P 5;
+ngsavgcategoryT.cores 5
+ngsavgcategoryT.mem 5000
+#annotatepeaksgroup.
+#	ngs.plot.r -G mm10 -R genebody -C [% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %] \
+#		-T "[% datasource.mark_full %] [% datasource.Cell %] Cell" -O out -L 3000 -CO blue:white:red -P 5 -FI 0;
+#	for clusters in {4..10};
+#		do name="cluster.${clusters}";
+#		replot.r heatmap -I out.zip -O ${name} -T "[% datasource.mark_full %] [% datasource.Cell %] Cell" \
+#			-L 3000 -GO km -KNC ${clusters} -CO blue:white:red -P 5;
+#		ExtractGName.R ${name}.RData;
+#	done
+#annotatepeaksgroup.output cluster.4.RData
+#annotatepeaksgroup.cores 5
+#annotatepeaksgroup.mem 5000
+#
+#
+#annotatepeaks.
+#	clusters=4
+#	ngs.plot.r -G mm10 -R genebody -C [% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %]            \
+#		-T "[% datasource.mark_full %] [% datasource.Cell %] Cell" -O out -L 3000 -GO km -KNC ${clusters} \
+#		-CO blue:white:red -P 5 -FI 1;
+#	[% software.ExtractGeneClusterings.r %] out;
+#	for i in $(seq 1 ${clusters});
+#	do
+#		echo -e "[% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %]	out.cluster${i}.txt	\
+#			\"[% datasource.mark_full %] [% datasource.Cell %] Cell Cluster${i}\""              \
+#			>> [% annotatepeaks.config.txt %];
+#	done
+#	ngs.plot.r -G mm10 -R genebody -C [% annotatepeaks.config.txt %] -O clusters -L 3000 -GO hc \
+#		-CO blue:white:red -P 5;
+#	echo > [% annotatepeaks.configB.txt %] <<-EOF
+#		[% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %]	[% input.B_ordered_TPM.txt %]	\
+#		"[% datasource.mark_full %] B cell"
+#	EOF
+#	ngs.plot.r -G mm10 -R genebody -C [% annotatepeaks.configB.txt %] -O TPMorderedB -L 3000    \
+#		-GO none -CO blue:white:red -P 5;
+#	echo > [% annotatepeaks.configT.txt %] <<-EOF
+#		[% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %]	[% input.T_ordered_TPM.txt %]	\
+#		"[% datasource.mark_full %] T cell"
+#	EOF
+#	ngs.plot.r -G mm10 -R genebody -C [% annotatepeaks.configT.txt %] -O TPMorderedT -L 3000 -GO none \
+#		-CO blue:white:red -P 5;
+#annotatepeaks.cores 5
+#annotatepeaks.mem 5000
+#
+#
+#seperateclusters.
+#	clusters=4;
+#	cp [% annotatepeaksgroup.output1 %] [% seperateclusters.clusters.RData %];
+#	ExtractGName.R [% seperateclusters.clusters.RData %];
+#	>&2 echo "cluster1-4";
+#	for i in {1..4}
+#	do
+#		>&2 echo "cluster" ${i};
+#		echo -e "[% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %]	clusters.1.cluster${i}.txt	\"[% datasource.mark_full %] [% datasource.Cell %] Cell\"" > [% seperateclusters.config.txt %];
+#		>&2 echo "ngs.plot.r -G mm10 -R genebody -C [% seperateclusters.config.txt %] -O heatmapclusters.${i} -L 5000 -GO total -CO blue:white:red -P 5";
+#		ngs.plot.r -G mm10 -R genebody -C [% seperateclusters.config.txt %] -O heatmapclusters.${i} -L 3000 -GO total -CO blue:white:red -P 5;
+#		convert -density 150 heatmapclusters.${i}.heatmap.pdf -quality 90 heatmapclusters.${i}.heatmap.png;
+#	done
+#seperateclusters.cores 5
+#seperateclusters.mem 5000
+#
+#
+#pdfmerge.groupby.Mark
+#	ls [% groupby.Mark.seperateclusters.config.txt %];
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.4.pdf %] Cluster4.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.5.pdf %] Cluster5.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.6.pdf %] Cluster6.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.7.pdf %] Cluster7.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.8.pdf %] Cluster8.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.9.pdf %] Cluster9.pdf;
+##	pdfunite [% groupby.Mark.annotatepeaksgroup.cluster.10.pdf %] Cluster10.pdf;
+#pdfmerge.cores 5
+#pdfmerge.mem 5000
