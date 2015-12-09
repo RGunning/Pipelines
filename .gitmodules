@@ -1,0 +1,3 @@
+[submodule "ChIPseq"]
+	path = ChIPseq
+	url = https://github.com/RGunning/ChIPseq.git
