@@ -2,22 +2,68 @@ step1.
 	# fix chromosomal naming as GTF doesn't use chr
 	sed 's/chr//g' [% datasource.Peaks %] | bedtools sort > [% step1.gappedPeak.bed %];
 	sed 's/chr//g' /lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/input/[% datasource.LMR %] | bedtools sort > [% step1.lmr.bed %];
+	#########
+	#peak lmr intersect
+	bedtools intersect -f 0.8 -F 0.8 -e -a [% step1.gappedPeak.bed %] -b [% step1.lmr.bed %] > [% step1.lmrpeak.bed %];
+	#########
 	#restrict to gene co-ordinates
 	bedtools intersect -a [% step1.gappedPeak.bed %] -b [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] > [% step1.genic.bed %];
+	bedtools intersect -a [% step1.lmr.bed %] -b [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] > [% step1.lmr_gene.bed %];
+
 	# overlapped genes with at least 10% of peak or gene in overlap
-	bedtools intersect -u -f 0.1 -F 0.1 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.gappedPeak.bed %] > [% step1.genes.bed %];
-	# Intersect Peaks with LMRs requiring atleast 80% overlap of Peak or LMR
+	#bedtools intersect -u -f 0.1 -F 0.1 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.gappedPeak.bed %] > [% step1.genes.bed %];
+
+	# Intersect Peaks with LMRs requiring atleast 80% overlap of Peak or LMR restricted to gene co-ordinates
 	bedtools intersect -wo -f 0.8 -F 0.8 -e -a [% step1.genic.bed %] -b [% step1.lmr.bed %] > [% step1.LMR_intersect.bed %];
-	#peak in output if at least 1 overlap with B
-	bedtools intersect -u -f 0.8 -F 0.8 -e -a [% step1.genic.bed %] -b [% step1.lmr.bed %] > [% step1.LMR_intersect_peakcount.bed %];
-	bedtools intersect -u -f 0.8 -F 0.8 -e -a [% step1.lmr.bed %] -b [% step1.genic.bed %] > [% step1.LMR_intersect_lmrcount.bed %];
+	# peak in output if at least 1 overlap with B restricted to gene co-ordinates
+	bedtools intersect -u -f 0.8 -F 0.8 -e -a [% step1.genic.bed %] -b [% step1.lmr.bed %] | wc -l > [% step1.LMR_intersect_peakcount.count %];
+	bedtools intersect -u -f 0.8 -F 0.8 -e -a [% step1.lmr.bed %] -b [% step1.genic.bed %] | wc -l > [% step1.LMR_intersect_lmrcount.count %];
+	#########
+	#########
+	#########
+	## Some counts
+	#peaks in genes
+	cat [% step1.genic.bed %] | wc -l > [% step1.count.peaks %];
+	bedtools intersect -a [% step1.lmr.bed %] -b [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] | wc -l > [% step1.count.lmr %];
+	#genes with peaks
+	bedtools intersect -u -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.gappedPeak.bed %] |wc -l > [% step1.count.genes %];
+	bedtools intersect -u -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.lmr.bed %] |wc -l > [% step1.count.genes_w_lmr %];
+	#
+	bedtools intersect -u -a [% step1.lmrpeak.bed %] -b [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] | wc -l > [% step1.count.overlap_w_genes %];
+	bedtools intersect -u -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.lmrpeak.bed %] | tee [% step1.genes_w_overlap.gtf %]| wc -l > [% step1.count.genes_w_overlap %];
+	#
+	# Expressed
+	cat [% step1.genes_w_overlap.gtf %] | [% software.gtf2txt.py %] | sort | sed 's/\t//g' > [% step1.genes_w_overlap.txt %];
+	comm -12 /lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/input/[% datasource.Cell %]expressed.txt [% step1.genes_w_overlap.txt %] | wc -l > [% step1.genes_w_overlap.expressed %];
+	comm -13 /lustre/scratch110/sanger/rg12/Pipeline/LMR_PEAK/input/[% datasource.Cell %]expressed.txt [% step1.genes_w_overlap.txt %] | wc -l > [% step1.genes_w_overlap.notexpressed %];
+	#########
+	#########
+	#########
 	#Peaks per gene
 	bedtools intersect -loj -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.genic.bed %] > [% step1.PeaksPerGene.bed %];
 	#LMR per gene
 	bedtools intersect -loj -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b [% step1.lmr.bed %] > [% step1.LMRPerGene.bed %];
 	#Fix double tab issue
-	sed 's/\t\t/\t/g' [% step1.LMRPerGene.bed %] > tmp.bed;
-	mv tmp.bed [% step1.LMRPerGene.bed %];
+	sed 's/\t\t/\t/g' [% step1.LMRPerGene.bed %] > tmp.bed; mv tmp.bed [% step1.LMRPerGene.bed %];
+
+
+step1collate.once
+	name=([% jobs.datasource.Name %]);
+	genesWpeaks=([% jobs.step1.count.genes %]);
+	peaksWgenes=([% jobs.step1.count.peaks %]);
+	genesWlmr=([% jobs.step1.count.genes_w_lmr %]);
+	lmrWgenes=([% jobs.step1.count.lmr %]);
+	genesWoverlap=([% jobs.step1.count.genes_w_overlap %]);
+	overlapWgenes=([% jobs.step1.count.overlap_w_genes %]);
+	expressedgenesWoverlap=([% jobs.step1.genes_w_overlap.expressed %]);
+	notexpressedgenesWoverlap=([% jobs.step1.genes_w_overlap.notexpressed %]);
+	count=${#name[@]};
+	echo -e "Name\tPeaks in Genes\tGenes with Peaks\toverlap w genes\tgenes w overlap\tgenes w overlap >1TPM\tgenes w overlap <1 TPM\tLMR in Genes\t Genes w LMR" > [% step1collate.outputcounts %];
+	for (( i=0; i<${count}; i++ ));
+	do
+		echo "${name[$i]}" >> [% step1collate.outputcounts %];
+		paste  ${peaksWgenes[$i]} ${genesWpeaks[$i]} ${overlapWgenes[$i]} ${genesWoverlap[$i]} ${expressedgenesWoverlap[$i]} ${notexpressedgenesWoverlap[$i]} ${lmrWgenes[$i]} ${genesWlmr[$i]} >> [% step1collate.outputcounts %];
+	done
 
 
 step2.
@@ -53,7 +99,7 @@ step2.
 
 
 step3.once
-	peak=([% datasource.Name %]);
+	peak=([% jobs.datasource.Name %]);
 	pgenes=([% jobs.step1.genic.bed %]);
 	sed 's/chr//g' [% input.hmr_NB.bed %] | bedtools sort > [% step3.hmr_NB.bed %];
 	sed 's/chr//g' [% input.hmr_NT.bed %] | bedtools sort > [% step3.hmr_NT.bed %];

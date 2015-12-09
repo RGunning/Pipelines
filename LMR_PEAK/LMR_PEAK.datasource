@@ -1,9 +1,9 @@
-Name	Hmark	Peaks	LMR	config
-B_4M	4M  	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/B_4M-ChIPseqout_peaks.gappedPeak	hmr_NB.bed
-T_4M	4M  	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/T_4M-ChIPseqout_peaks.gappedPeak	hmr_NT.bed
-B_36M	36M 	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/B_36M-ChIPseqout_peaks.gappedPeak	hmr_NB.bed
-T_36M	36M 	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/T_36M-ChIPseqout_peaks.gappedPeak	hmr_NT.bed
-BB_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/B_B_27ac-ChIPseqout_peaks.gappedPeak	hmr_NB.bed
-BT_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/B_T_27ac-ChIPseqout_peaks.gappedPeak	hmr_NT.bed
-CB_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/C_B_27ac-ChIPseqout_peaks.gappedPeak	hmr_NB.bed
-CT_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/C_T_27ac-ChIPseqout_peaks.gappedPeak	hmr_NT.bed
+Name	Hmark	Peaks	LMR	Cell
+B_4M	4M  	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/B_4M-ChIPseqout_peaks.gappedPeak	hmr_NB.bed	B
+T_4M	4M  	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/T_4M-ChIPseqout_peaks.gappedPeak	hmr_NT.bed	T
+B_36M	36M 	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/B_36M-ChIPseqout_peaks.gappedPeak	hmr_NB.bed	B
+T_36M	36M 	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/2/T_36M-ChIPseqout_peaks.gappedPeak	hmr_NT.bed	T
+BB_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/B_B_27ac-ChIPseqout_peaks.gappedPeak	hmr_NB.bed	B
+BT_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/B_T_27ac-ChIPseqout_peaks.gappedPeak	hmr_NT.bed	T
+CB_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/C_B_27ac-ChIPseqout_peaks.gappedPeak	hmr_NB.bed	B
+CT_27ac	27ac	/lustre/scratch110/sanger/rg12/Pipeline/ChIPseq/symlink/macsmergedbroad/3/C_T_27ac-ChIPseqout_peaks.gappedPeak	hmr_NT.bed	T

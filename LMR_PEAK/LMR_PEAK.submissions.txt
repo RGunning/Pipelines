@@ -20,3 +20,20 @@
 2015-09-29T09:32:08	run[ 1 ] [ step-filter: * ] [ job-filter: * ]	0
 2015-09-29T15:34:11	run[ 1 ] [ step-filter: step2 ] [ job-filter: * ]	0
 2015-09-29T15:50:36	run[ 1 ] [ step-filter: step2 ] [ job-filter: * ]	0
+2015-12-07T15:56:16	run[ 1 ] [ step-filter: step1 ] [ job-filter: * ]	0
+2015-12-07T17:06:20	run[ 1 ] [ step-filter: step1 ] [ job-filter: * ]	0
+2015-12-08T14:00:11	run[ 1 ] [ step-filter: step1 ] [ job-filter: 0 ]	0
+2015-12-08T14:45:26	run[ 1 ] [ step-filter: step1 ] [ job-filter: 0 ]	0
+2015-12-08T15:37:21	run[ 1 ] [ step-filter: step1 ] [ job-filter: * ]	0
+2015-12-08T15:39:55	run[ 1 ] [ step-filter: step1 ] [ job-filter: * ]	0
+2015-12-08T15:45:38	run[ 1 ] [ step-filter: step1collate ] [ job-filter: * ]	0
+2015-12-08T16:08:51	run[ 1 ] [ step-filter: step1collate ] [ job-filter: * ]	0
+2015-12-08T16:20:12	run[ 1 ] [ step-filter: step1collate ] [ job-filter: * ]	0
+2015-12-08T16:29:06	run[ 1 ] [ step-filter: step1 ] [ job-filter: * ]	smoke-test
+2015-12-08T16:29:41	run[ 1 ] [ step-filter: step1 ] [ job-filter: 0 ]	smoke-test
+2015-12-08T16:33:22	run[ 1 ] [ step-filter: step1 ] [ job-filter: 0 ]	smoke-test
+2015-12-08T16:35:11	run[ 1 ] [ step-filter: step1 ] [ job-filter: 0 ]	smoke-test
+2015-12-08T16:35:47	run[ 1 ] [ step-filter: step1 step1collate ] [ job-filter: * ]	0
+2015-12-08T16:45:23	run[ 1 ] [ step-filter: step1 step1collate ] [ job-filter: * ]	0
+2015-12-08T16:48:27	run[ 1 ] [ step-filter: step1 step1collate ] [ job-filter: * ]	0
+2015-12-08T16:54:00	run[ 1 ] [ step-filter: step1 step1collate ] [ job-filter: * ]	0

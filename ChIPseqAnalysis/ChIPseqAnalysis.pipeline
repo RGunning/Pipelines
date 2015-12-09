@@ -104,18 +104,18 @@ ngsavgcategoryB.once
 	mark=([% jobs.datasource.mark %]);
 	cnt=${#PD[@]};
 	for ((i=0;i<cnt;i++)); do
-		PD[i]=$(eval echo "\$PD${PD[i]}");
-		treat[i]=$(eval echo "\$sample${treat[i]}B");
-		input[i]=$(eval echo "\$input${input[i]}B");
-		peak[i]=$(eval echo "\$peak${peak[i]}B");
-		sed 's/chr//g' ${peak[i]} | bedtools sort > ${i}.bed;
+		PD[$i]=$(eval echo "\$PD${PD[$i]}");
+		treat[$i]=$(eval echo "\$sample${treat[$i]}B");
+		input[$i]=$(eval echo "\$input${input[$i]}B");
+		peak[$i]=$(eval echo "\$peak${peak[$i]}B");
+		sed 's/chr//g' ${peak[$i]} | bedtools sort > ${i}.bed;
 		bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b ${i}.bed | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
 		comm -12 [% ngsavgcategoryB.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
 		comm -12 [% ngsavgcategoryB.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
 		comm -12 [% ngsavgcategoryB.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
-		echo -e "${treat[i]}:${input[i]}	genes.0.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.0.txt %];
-		echo -e "${treat[i]}:${input[i]}	genes.1.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.1.txt %];
-		echo -e "${treat[i]}:${input[i]}	genes.100.${i}.txt	\"${mark[i]} B Cell\"	${PD[i]}" >> [% ngsavgcategoryB.config.100.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.0.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryB.config.0.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.1.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryB.config.1.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.100.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryB.config.100.txt %];
 	done
 	#
 	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryB.config.0.txt %] -L 5000 -O out0 -CO blue:white:red -P 5;
@@ -142,18 +142,18 @@ ngsavgcategoryT.once
 	mark=([% jobs.datasource.mark %]);
 	cnt=${#PD[@]};
 	for ((i=0;i<cnt;i++)); do
-		PD[i]=$(eval echo "\$PD${PD[i]}");
-		treat[i]=$(eval echo "\$sample${treat[i]}T");
-		input[i]=$(eval echo "\$input${input[i]}T");
-		peak[i]=$(eval echo "\$peak${peak[i]}T");
-		sed 's/chr//g' ${peak[i]} | bedtools sort > ${i}.bed;
+		PD[$i]=$(eval echo "\$PD${PD[$i]}");
+		treat[$i]=$(eval echo "\$sample${treat[$i]}T");
+		input[$i]=$(eval echo "\$input${input[$i]}T");
+		peak[$i]=$(eval echo "\$peak${peak[$i]}T");
+		sed 's/chr//g' ${peak[$i]} | bedtools sort > ${i}.bed;
 bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %] -b ${i}.bed | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
 		comm -12 [% ngsavgcategoryT.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
 		comm -12 [% ngsavgcategoryT.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
 		comm -12 [% ngsavgcategoryT.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
-		echo -e "${treat[i]}:${input[i]}	genes.0.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.0.txt %];
-		echo -e "${treat[i]}:${input[i]}	genes.1.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.1.txt %];
-		echo -e "${treat[i]}:${input[i]}	genes.100.${i}.txt	\"${mark[i]} T Cell\"	${PD[i]}" >> [% ngsavgcategoryT.config.100.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.0.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryT.config.0.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.1.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryT.config.1.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	genes.100.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryT.config.100.txt %];
 	done
 	#
 	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryT.config.0.txt %] -L 5000 -O out0 -CO blue:white:red -P 5;
@@ -161,6 +161,119 @@ bedtools intersect -u -f 0.01 -F 0.01 -e -a [% input.Mus_musculus.GRCm38.79.gene
 	ngs.plot.r -G mm10 -R tss -C [% ngsavgcategoryT.config.100.txt %] -L 5000 -O out2 -CO blue:white:red -P 5;
 ngsavgcategoryT.cores 5
 ngsavgcategoryT.mem 5000
+
+
+gtfadjust.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gtfAdjustStart.pl";
+	${prog} 2000 [% gtfadjust.output.gtf %] [% input.Mus_musculus.GRCm38.79.genes.chrom.gtf %];
+	sed 's/chr//g' [% input.hmr_NB.bed %] | bedtools sort > [% gtfadjust.hmr_NB.bed %];
+	sed 's/chr//g' [% input.hmr_NT.bed %] | bedtools sort > [% gtfadjust.hmr_NT.bed %];
+
+
+ngsavgcategoryBLMR.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gtf2txt.py";
+	prog2="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gene2expression.R";
+	touch [% jobs.datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	source [% step1.macsfiles %];
+	#
+	sort -o [% ngsavgcategoryBLMR.0expressed.txt %] [% input.B0expressed.txt %]
+	sort -o [% ngsavgcategoryBLMR.1-100expressed.txt %] [% input.B1-100expressed.txt %]
+	sort -o [% ngsavgcategoryBLMR.100expressed.txt %] [% input.B100expressed.txt %]
+	#
+	PD=([% jobs.datasource.name %]);
+	treat=([% jobs.datasource.comp %]);
+	input=([% jobs.datasource.comp %]);
+	peak=([% jobs.datasource.comp %]);
+	mark=([% jobs.datasource.mark %]);
+	cnt=${#PD[@]};
+	for ((i=0;i<cnt;i++)); do
+		PD[$i]=$(eval echo "\$PD${PD[$i]}");
+		treat[$i]=$(eval echo "\$sample${treat[$i]}B");
+		input[$i]=$(eval echo "\$input${input[$i]}B");
+		peak[$i]=$(eval echo "\$peak${peak[$i]}B");
+		sed 's/chr//g' ${peak[$i]} | bedtools sort > ${i}.bed;
+		bedtools intersect -f 0.8 -F 0.8 -e -a [% gtfadjust.hmr_NB.bed %] -b ${i}.bed > [% ngsavgcategoryBLMR.overlap.bed %];
+		bedtools intersect -u -f 0.8 -F 0.8 -e -a [% gtfadjust.output.gtf %] -b [% ngsavgcategoryBLMR.overlap.bed %] | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
+		comm -12 [% ngsavgcategoryBLMR.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
+		comm -12 [% ngsavgcategoryBLMR.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
+		comm -12 [% ngsavgcategoryBLMR.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.0.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryBLMR.config.0.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.1.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryBLMR.config.1.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.100.${i}.txt	\"${mark[$i]} B Cell\"	${PD[$i]}" >> [% ngsavgcategoryBLMR.config.100.txt %];
+		#
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.0.${i}.txt	\"${mark[$i]} B Cell 0-1 TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.1.${i}.txt	\"${mark[$i]} B Cell 1-100 TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryBLMR %]/genes.100.${i}.txt	\"${mark[$i]} B Cell 100+ TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+	done
+	#
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryBLMR.config.0.txt %] -L 2000 -O out0 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryBLMR.config.1.txt %] -L 2000 -O out1 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryBLMR.config.100.txt %] -L 2000 -O out2 -CO blue:white:red -P 5;
+	Rscript ${prog2};
+ngsavgcategoryBLMR.cores 5
+ngsavgcategoryBLMR.mem 5000
+ngsavgcategoryBLMR.output H3K4me3.config.txt H3K36me3.config.txt H3K27ac.config.txt
+
+ngsavgcategoryTLMR.once
+	prog="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gtf2txt.py";
+	prog2="/nfs/users/nfs_r/rg12/lustre110/Pipeline/ChIPseqAnalysis/software/gene2expression.R";
+	touch [% jobs.datasource.name %];
+	source [% step1.fragmentlength %];
+	source [% step1.bamfiles %];
+	source [% step1.macsfiles %];
+	#
+	sort -o [% ngsavgcategoryTLMR.0expressed.txt %] [% input.T0expressed.txt %]
+	sort -o [% ngsavgcategoryTLMR.1-100expressed.txt %] [% input.T1-100expressed.txt %]
+	sort -o [% ngsavgcategoryTLMR.100expressed.txt %] [% input.T100expressed.txt %]
+	#
+	PD=([% jobs.datasource.name %]);
+	treat=([% jobs.datasource.comp %]);
+	input=([% jobs.datasource.comp %]);
+	peak=([% jobs.datasource.comp %]);
+	mark=([% jobs.datasource.mark %]);
+	cnt=${#PD[@]};
+	for ((i=0;i<cnt;i++)); do
+		PD[$i]=$(eval echo "\$PD${PD[$i]}");
+		treat[$i]=$(eval echo "\$sample${treat[$i]}T");
+		input[$i]=$(eval echo "\$input${input[$i]}T");
+		peak[$i]=$(eval echo "\$peak${peak[$i]}T");
+		sed 's/chr//g' ${peak[$i]} | bedtools sort > ${i}.bed;
+		bedtools intersect -f 0.8 -F 0.8 -e -a [% gtfadjust.hmr_NT.bed %] -b ${i}.bed > [% ngsavgcategoryTLMR.overlap.bed %];
+		bedtools intersect -u -f 0.8 -F 0.8 -e -a [% gtfadjust.output.gtf %] -b [% ngsavgcategoryTLMR.overlap.bed %] | ${prog} |sort | sed 's/\t//g' > genes.${i}.txt;
+		comm -12 [% ngsavgcategoryTLMR.0expressed.txt %] genes.${i}.txt > genes.0.${i}.txt
+		comm -12 [% ngsavgcategoryTLMR.1-100expressed.txt %] genes.${i}.txt > genes.1.${i}.txt
+		comm -12 [% ngsavgcategoryTLMR.100expressed.txt %] genes.${i}.txt > genes.100.${i}.txt
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.0.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryTLMR.config.0.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.1.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryTLMR.config.1.txt %];
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.100.${i}.txt	\"${mark[$i]} T Cell\"	${PD[$i]}" >> [% ngsavgcategoryTLMR.config.100.txt %];
+		#
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.0.${i}.txt	\"${mark[$i]} T Cell 0-1 TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.1.${i}.txt	\"${mark[$i]} T Cell 1-100 TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+		echo -e "${treat[$i]}:${input[$i]}	[% ngsavgcategoryTLMR %]/genes.100.${i}.txt	\"${mark[$i]} T Cell 100+ TPM\"	${PD[$i]}" >> ${mark[$i]}.config.txt;
+	done
+	#
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryTLMR.config.0.txt %] -L 2000 -O out0 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryTLMR.config.1.txt %] -L 2000 -O out1 -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% ngsavgcategoryTLMR.config.100.txt %] -L 2000 -O out2 -CO blue:white:red -P 5;
+	Rscript ${prog2};
+ngsavgcategoryTLMR.cores 5
+ngsavgcategoryTLMR.mem 5000
+ngsavgcategoryTLMR.output H3K4me3.config.txt H3K36me3.config.txt H3K27ac.config.txt
+
+lmrPeakMark.once
+	cat [% ngsavgcategoryBLMR.output1 %] [% ngsavgcategoryTLMR.output1 %] > [% lmrPeakMark.H3K4me3.config %];
+	cat [% ngsavgcategoryBLMR.output2 %] [% ngsavgcategoryTLMR.output2 %] > [% lmrPeakMark.H3K36me3.config %];
+	cat [% ngsavgcategoryBLMR.output3 %] [% ngsavgcategoryTLMR.output3 %] > [% lmrPeakMark.H3K27ac.config %];
+	ngs.plot.r -G mm10 -R genebody -C [% lmrPeakMark.H3K4me3.config %] -L 2000 -O out4m -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% lmrPeakMark.H3K36me3.config %] -L 2000 -O out36m -CO blue:white:red -P 5;
+	ngs.plot.r -G mm10 -R genebody -C [% lmrPeakMark.H3K27ac.config %] -L 2000 -O out27ac -CO blue:white:red -P 5;
+lmrPeakMark.cores 5
+lmrPeakMark.mem 5000
+
+
+
 #annotatepeaksgroup.
 #	ngs.plot.r -G mm10 -R genebody -C [% samtoolsview.duplicate.bam %]:[% samtoolsviewInp.duplicate.bam %] \
 #		-T "[% datasource.mark_full %] [% datasource.Cell %] Cell" -O out -L 3000 -CO blue:white:red -P 5 -FI 0;
